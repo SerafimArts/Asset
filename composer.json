@@ -1,0 +1,25 @@
+{
+    "name": "serafim/asset",
+    "type": "library",
+    "description": "Asset precompile for PHP.",
+    "keywords": ["css", "scss", "less", "javascript", "coffeescript"],
+    "homepage": "https://github.com/SerafimArts/Asset",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nesmeyanov Kirill",
+            "email": "serafim@sources.ru",
+            "homepage": "http://serafimarts.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "leafo/lessphp": "dev-master",
+        "leafo/scssphp": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Asset": "src/"
+        }
+    }
+}
