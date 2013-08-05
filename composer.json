@@ -17,6 +17,7 @@
         "leafo/lessphp": "dev-master",
         "leafo/scssphp": "dev-master"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "Asset": "src/"

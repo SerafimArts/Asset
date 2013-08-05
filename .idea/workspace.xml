@@ -6,6 +6,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/composer.json" changelist="829ff47c-18b2-4a66-bbcc-e1b5f80d2d42" time="1375741441653" ignored="false" />
     <file path="/a.dummy" changelist="829ff47c-18b2-4a66-bbcc-e1b5f80d2d42" time="1375741631873" ignored="false" />
+    <file path="$PROJECT_DIR$/../assetic/composer.json" changelist="829ff47c-18b2-4a66-bbcc-e1b5f80d2d42" time="1375742432360" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +29,7 @@
       <file leaf-file-name="composer.json" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/composer.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="32" selection-start="310" selection-end="310" vertical-scroll-proportion="0.46646342">
+            <state line="19" column="31" selection-start="585" selection-end="585" vertical-scroll-proportion="0.6779141">
               <folding />
             </state>
           </provider>
@@ -50,6 +51,7 @@
       </list>
     </option>
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1" />
     <option name="y" value="504" />
@@ -107,6 +109,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../assetic" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -268,7 +271,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="32" selection-start="310" selection-end="310" vertical-scroll-proportion="0.46646342">
+        <state line="19" column="31" selection-start="585" selection-end="585" vertical-scroll-proportion="0.6779141">
           <folding />
         </state>
       </provider>
