@@ -19,14 +19,14 @@ use \Asset\Cache;
 class File
 {
     /**
-     * @var mixed
+     * @var array
      */
-    private $_type;
+    private $_type = [];
 
     /**
-     * @var
+     * @var array
      */
-    private $_file;
+    private $_file = [];
 
     /**
      * @var Config
@@ -40,13 +40,30 @@ class File
      */
     public function __construct($file, Config $config = null)
     {
+        $this->_config  = $config === null ? new Config : $config;
+
+        if (is_array($file)) {
+            foreach ($file as $f) {
+                $this->_init($f, $config);
+            }
+        } else {
+            $this->_init($file);
+        }
+    }
+
+    /**
+     * @param $file
+     * @throws Exception\FileNotFoundException
+     */
+    private function _init($file)
+    {
         if (!file_exists($file)) {
             throw new FileNotFoundException("File ${file} not found.");
         }
-        $this->_file    = $file;
-        $this->_config  = $config === null ? new Config : $config;
-        $this->_type    = $this->_getType($file);
+        $this->_file[]  = $file;
+        $this->_type[]  = $this->_getType($file);
     }
+
 
     /**
      * @param $type
@@ -54,7 +71,7 @@ class File
      */
     public function asType($type)
     {
-        $this->_type = $type;
+        $this->_type = array_fill(0, count($this->_type),$type);
         return $this;
     }
 
@@ -64,14 +81,20 @@ class File
      */
     public function compile($ext)
     {
-        $adaptor    = ('\\Asset\\Adaptor\\' . ucfirst($this->_type));
-        return (new Cache($this->_config, $ext))
-            ->check($this->_file, function() use ($adaptor) {
+        $result = [];
+
+        for ($i=0; $i<count($this->_file); $i++) {
+            $adaptor    = ('\\Asset\\Adaptor\\' . ucfirst($this->_type[$i]));
+            $result[] = (new Cache($this->_config, $ext))
+                ->check($this->_file[$i], function() use ($i, $adaptor) {
                     $compiler   = new $adaptor(
-                        $this->_getSources($this->_file)
+                        $this->_getSources($this->_file[$i])
                     );
                     return $compiler->getResult();
                 });
+        }
+
+        return count($result) > 1 ? $result : $result[0];
     }
 
     /**
