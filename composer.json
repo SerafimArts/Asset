@@ -14,8 +14,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "leafo/lessphp": "dev-master",
-        "leafo/scssphp": "dev-master"
+        "leafo/lessphp": "v0.3.9",
+        "leafo/scssphp": "v0.0.7"
     },
     "minimum-stability": "dev",
     "autoload": {
