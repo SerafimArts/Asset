@@ -8,6 +8,8 @@
  */
 namespace Asset\File;
 
+use Asset\Exception\FileNotFoundException;
+
 /**
  * Class Virtual
  * @package Asset\File
@@ -41,6 +43,9 @@ class Virtual
     public function __construct($file, $ext)
     {
         $this->_path    = realpath($file);
+        if (!file_exists($this->_path)) {
+            throw new FileNotFoundException("Source file ${file} could'n be find.");
+        }
         $this->_content = file_get_contents($this->_path);
         $this->_adaptor = $adaptor = '\\Asset\\Adaptor\\' . ucfirst($ext);
         $this->_type    = $adaptor::type();
