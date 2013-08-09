@@ -13,6 +13,7 @@ The Asset is port (in future) of RoR Asset Pipeline gem file. Now you can use th
 - Css
 - CoffeeScript
 - Js
+- and Css minify helper
 
 ## Installation
 
@@ -40,13 +41,14 @@ Add the following dependencies to your projects composer.json file:
 ```
 ### 3. Compile callbacks
 ```php
-    // Css minfy example (this is example, CssMinify class does not exist)
-    Asset\Adaptor\Css::after(function($source){
-        return (new CssMinify)->minfy($sources);
+    // Css minfy example (it works, really :D)
+    Asset\Trigger::css(function($source){
+        return Asset\Helper\CssMin::minify($source);
     });
+
     
     // Compass example (this is example, ScssCompass class does not exist)
-    Asset\Adaptor\Scss::before(function($source){
+    Asset\Trigger::adaptor('scss', function($source){
         return (new \ScssCompass($source))->compile();
     });
 ```
