@@ -75,4 +75,15 @@ class Cache
         foreach ($files as $file) { $path .= $file->path(); }
         return $this->_config->get(Config::CACHE) . md5($path) . '.' . $files[0]->type();
     }
+
+    /**
+     * @param array $files
+     * @return string
+     */
+    public function url(array $files)
+    {
+        $path = '';
+        foreach ($files as $file) { $path .= $file->path(); }
+        return $this->_config->get(Config::URL) . md5($path) . '.' . $files[0]->type();
+    }
 }

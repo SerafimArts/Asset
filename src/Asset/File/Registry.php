@@ -54,7 +54,7 @@ class Registry
             if ($cache->compare($files)) {
                 $cache->set($files);
             }
-            $result .= $files[0]->serialize($cache->hash($files)) . "\n";
+            $result .= $files[0]->serialize($cache->url($files)) . "\n";
         }
         return $result;
     }
