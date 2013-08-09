@@ -1,6 +1,6 @@
 Asset
 =====
-Asset precompile for PHP.
+Asset Pipline port for PHP.
 version 0.0.1-dev
 
 ## What is Asset?
