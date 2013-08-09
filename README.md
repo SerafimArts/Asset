@@ -17,13 +17,13 @@ The Asset is port (in future) of RoR Asset Pipeline gem file. Now you can use th
 ### 1. Composer
 
 Add the following dependencies to your projects composer.json file:
-
+```json
     "require": {
-        # ..
+        // ..
         "serafim/asset": "dev-master"
-        # ..
+        // ..
     }
-
+```
 
 ### 2. Using
 ```php
