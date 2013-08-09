@@ -4,7 +4,6 @@
  * @link http://rudev.org/
  * @date 06.08.13 2:06
  * @copyright 2008-2013 RuDev
- * @package Config.php
  * @since 1.0
  */
 namespace Asset;
@@ -15,12 +14,19 @@ namespace Asset;
  */
 class Config
 {
+    const CACHE = 'cache';
+    const URL   = 'url';
+    const ENV   = 'env';
+    const ENV_DEVELOPMENT   = 'dev';
+    const ENV_PRODUCTION    = 'prod';
+
     /**
      * @var array
      */
     private $_config = [
-        'cache' => false,
-        'url'   => '/'
+        self::CACHE => false,
+        self::URL   => '/',
+        self::ENV   => self::ENV_DEVELOPMENT
     ];
 
     /**

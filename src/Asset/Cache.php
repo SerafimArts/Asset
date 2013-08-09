@@ -2,18 +2,16 @@
 /**
  * @author Serafim <serafim@sources.ru>
  * @link http://rudev.org/
- * @date 06.08.13 2:05
+ * @date 09.08.13 5:18
  * @copyright 2008-2013 RuDev
- * @package Cache.php
  * @since 1.0
  */
 namespace Asset;
 
-use Asset\Exception\CacheException;
 
 /**
  * Class Cache
- * @package Mirror\Tokenizer
+ * @package Asset
  */
 class Cache
 {
@@ -23,105 +21,58 @@ class Cache
     private $_config;
 
     /**
-     * @var bool
+     * @param Config $conf
      */
-    private $_cache = false;
-
-    /**
-     * @var string
-     */
-    private $_extension = '';
-
-    /**
-     * @param Config $config
-     * @param        $extension
-     */
-    public function __construct(\Asset\Config $config, $extension)
+    public function __construct(Config $conf)
     {
-        $this->_extension   = $extension;
-        $this->_config      = $config;
-
-        $cache = $this->_config->get('cache');
-        $this->_cache = (bool)$cache;
-    }
-
-    /**
-     * @param          $source
-     * @param callable $cb
-     * @return bool|string
-     */
-    public function check($source, callable $cb)
-    {
-        if (!$this->_cache) { return false; }
-        $path = realpath($source);
-
-        if ($this->has($path)) {
-            $this->get($path);
-        } else {
-            $this->set($path, $cb());
+        $this->_config = $conf;
+        if (!is_dir($conf->get(Config::CACHE))) {
+            mkdir($conf->get(Config::CACHE), 0777, true);
         }
-        return $this->_config->get('url') .
-        pathinfo($this->_hash($source), PATHINFO_BASENAME);
     }
 
     /**
-     * @param $source
+     * @param array $files
+     */
+    public function set(array $files)
+    {
+        $hash = $this->hash($files);
+        $content = '';
+        foreach ($files as $file) {
+            $content .= $file->compile();
+        }
+        file_put_contents($hash, $content);
+    }
+
+    /**
+     * @param array $files
      * @return bool
      */
-    public function has($source)
+    public function compare(array $files)
     {
-        $this->_checkCache();
-        $cache  = $this->_hash($source);
-        if (
-            !file_exists($cache) ||
-            filemtime(realpath($source)) > filemtime($cache)
-        ) { return false; }
-        return true;
-    }
-
-    /**
-     * @param $source
-     * @param $data
-     * @return mixed
-     */
-    public function set($source, $data)
-    {
-        $this->_checkCache();
-        $cache  = $this->_hash($source);
-        if (!is_dir(dirname($cache))) { mkdir(dirname($cache), 0777, true); }
-        file_put_contents($cache, $data);
-        return $data;
-    }
-
-    /**
-     * @param $source
-     * @return string
-     */
-    public function get($source)
-    {
-        $this->_checkCache();
-        return file_get_contents(
-            $this->_hash($source)
+        $hash = $this->hash($files);
+        $compareTime = function() use ($hash, $files){
+            foreach ($files as $file) {
+                if (filemtime($file->path()) > filemtime($hash)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        return (
+            !file_exists($hash) ||
+            $compareTime()
         );
     }
 
     /**
-     * @param $name
+     * @param array $files
      * @return string
      */
-    private function _hash($name)
+    public function hash(array $files)
     {
-        return $this->_config->get('cache') . md5($name) . '-' .
-        pathinfo($name, PATHINFO_FILENAME) . '.' . $this->_extension;
-    }
-
-    /**
-     * @throws Exception\CacheException
-     */
-    private function _checkCache()
-    {
-        if (!$this->_cache) {
-            throw new CacheException('Undefined path for compiled sources');
-        }
+        $path = '';
+        foreach ($files as $file) { $path .= $file->path(); }
+        return $this->_config->get(Config::CACHE) . md5($path) . '.' . $files[0]->type();
     }
 }

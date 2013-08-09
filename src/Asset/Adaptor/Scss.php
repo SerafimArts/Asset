@@ -1,11 +1,9 @@
 <?php
 /**
- * @author Serafim <serafim@sources.ru>
- * @link http://rudev.org/
- * @date 06.08.13 2:09
- * @copyright 2008-2013 RuDev
- * @package Scss.php
- * @since 1.0
+ * Created by JetBrains PhpStorm.
+ * User: Serafim
+ * Date: 06.08.13 13:13
+ * Package: Asset Scss.php 
  */
 namespace Asset\Adaptor;
 
@@ -13,28 +11,22 @@ namespace Asset\Adaptor;
  * Class Scss
  * @package Asset\Adaptor
  */
-class Scss
-    extends AbstractAdaptor
-    implements AdaptorInterface
+class Scss extends AbstractAdaptor
 {
     /**
-     * @var string
+     * @var
      */
-    private $_result = '';
+    protected static $type = self::TYPE_STYLE;
 
     /**
      * @param $sources
+     * @return mixed
      */
-    public function __construct($sources)
+    public static function compile($sources)
     {
-        $this->_result = (new \scssc())->compile($sources);
-    }
-
-    /**
-     * @return string
-     */
-    public function getResult()
-    {
-        return $this->_result;
+        $scss = new \scssc;
+        return parent::trigger(function($data) use ($scss){
+            return $scss->compile($data);
+        }, $sources);
     }
 }

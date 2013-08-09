@@ -2,21 +2,21 @@
 /**
  * Created by JetBrains PhpStorm.
  * User: Serafim
- * Date: 06.08.13 13:13
- * Package: Asset Scss.php 
+ * Date: 05.08.13 23:14
+ * Package: Asset Js.php 
  */
 namespace Asset\Adaptor;
 
 /**
- * Class Less
+ * Class Js
  * @package Asset\Adaptor
  */
-class Less extends AbstractAdaptor
+class Js extends AbstractAdaptor
 {
     /**
      * @var
      */
-    protected static $type = self::TYPE_STYLE;
+    protected static $type = self::TYPE_SCRIPT;
 
     /**
      * @param $sources
@@ -24,9 +24,8 @@ class Less extends AbstractAdaptor
      */
     public static function compile($sources)
     {
-        $less = new \lessc;
-        return parent::trigger(function($data) use ($less){
-            return $less->compile($data);
+        return parent::trigger(function($data){
+            return $data;
         }, $sources);
     }
 }
