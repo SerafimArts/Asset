@@ -40,6 +40,7 @@ class Compiler
      */
     public function compile($files)
     {
+        Registry::flush();
         $files = is_array($files) ? $files : [$files];
         foreach ($files as $file) {
             Registry::push($file);
