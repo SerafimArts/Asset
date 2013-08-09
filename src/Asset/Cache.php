@@ -41,6 +41,9 @@ class Cache
         foreach ($files as $file) {
             $content .= $file->compile();
         }
+        $content = \Asset\Trigger::call(
+            $this->ext($hash)
+        , $content);
         file_put_contents($hash, $content);
     }
 
@@ -85,5 +88,15 @@ class Cache
         $path = '';
         foreach ($files as $file) { $path .= $file->path(); }
         return $this->_config->get(Config::URL) . md5($path) . '.' . $files[0]->type();
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    protected function ext($name)
+    {
+        $e = explode('.', $name);
+        return end($e);
     }
 }

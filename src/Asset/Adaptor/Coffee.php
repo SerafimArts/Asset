@@ -24,8 +24,7 @@ class Coffee extends AbstractAdaptor
      */
     public static function compile($sources)
     {
-        return parent::trigger(function($data){
-            return \CoffeeScript\Compiler::compile($data);
-        }, $sources);
+        $sources = \Asset\Trigger::call('coffee', $sources);
+        return \CoffeeScript\Compiler::compile($sources);
     }
 }

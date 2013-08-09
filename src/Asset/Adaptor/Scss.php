@@ -24,9 +24,8 @@ class Scss extends AbstractAdaptor
      */
     public static function compile($sources)
     {
+        $sources = \Asset\Trigger::call('coffee', $sources);
         $scss = new \scssc;
-        return parent::trigger(function($data) use ($scss){
-            return $scss->compile($data);
-        }, $sources);
+        return $scss->compile($sources);
     }
 }

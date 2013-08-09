@@ -25,8 +25,6 @@ class Css extends AbstractAdaptor
      */
     public static function compile($sources)
     {
-        return parent::trigger(function($data){
-                return $data;
-            }, $sources);
+        return $sources;
     }
 }

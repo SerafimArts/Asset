@@ -24,9 +24,8 @@ class Less extends AbstractAdaptor
      */
     public static function compile($sources)
     {
+        $sources = \Asset\Trigger::call('less', $sources);
         $less = new \lessc;
-        return parent::trigger(function($data) use ($less){
-            return $less->compile($data);
-        }, $sources);
+        return $less->compile($sources);
     }
 }

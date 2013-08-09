@@ -58,11 +58,12 @@ class Registry
         }
         return $result;
     }
-    
-    
-    
+
+    /**
+     * @return array
+     */
     public static function flush()
     {
-        self::$_files = [];
+        return self::$_files = [];
     }
 }
