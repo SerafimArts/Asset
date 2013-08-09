@@ -58,4 +58,11 @@ class Registry
         }
         return $result;
     }
+    
+    
+    
+    public static function flush()
+    {
+        self::$_files = [];
+    }
 }
