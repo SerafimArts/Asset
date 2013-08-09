@@ -1,7 +1,7 @@
 Asset
 =====
 Asset Pipline port for PHP.
-version 0.0.1-dev
+version 1.1.0-dev
 
 https://packagist.org/packages/serafim/asset
 
