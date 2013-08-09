@@ -2,6 +2,7 @@ Asset
 =====
 Asset Pipline port for PHP.
 version 0.0.1-dev
+[[https://packagist.org/packages/serafim/asset]]
 
 ## What is Asset?
 
