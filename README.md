@@ -26,7 +26,7 @@ Add the following dependencies to your projects composer.json file:
 
 
 ### 2. Using
-
+```php
     $asset = new Asset\Compiler([
         'cache' => __DIR__ . '/assets/',    // cache path
         'url'   => '/assets/'               // url link
@@ -35,9 +35,9 @@ Add the following dependencies to your projects composer.json file:
     // Return (example):
     // <link rel="stylesheet" href="/assets/5afedbae41974eaff65efc5163165f83.css" />
     // <script src="/assets/de91f6d25eedcebf54ecdac04a54490c.js"></script>
-    
+```
 ### 3. Compile callbacks
-
+```php
     // Css minfy example (this is example, CssMinify class does not exist)
     Asset\Adaptor\Css::after(function($source){
         return (new CssMinify)->minfy($sources);
@@ -47,4 +47,4 @@ Add the following dependencies to your projects composer.json file:
     Asset\Adaptor\Scss::before(function($source){
         return (new \ScssCompass($source))->compile();
     });
-
+```
