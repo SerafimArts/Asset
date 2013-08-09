@@ -9,6 +9,8 @@ The Asset is port (in future) of RoR Asset Pipeline gem file. Now you can use th
 - Less
 - Scss
 - Css
+- CoffeeScript
+- Js
 
 ## Installation
 
@@ -25,12 +27,12 @@ Add the following dependencies to your projects composer.json file:
 
 ### 2. Using
 
-    $config = new \Asset\Config([
-        'cache' => __DIR__ . '/assets/', # save file into `assets/` directory
-        'url'   => '/assets/' # url path
+    $asset = new Asset\Compiler([
+        'cache' => __DIR__ . '/assets/',    // cache path
+        'url'   => '/assets/'               // url link
     ]);
-
-    $f = new \Asset\File('test.scss', $config); # create asset file
-    echo $f->compile('css'); # compile and get result url
-
+    echo $asset->compile(['test.scss', 'test.less', 'test.css', 'test.js', 'test.coffee']);
+    // Return (example):
+    // <link rel="stylesheet" href="/assets/5afedbae41974eaff65efc5163165f83.css" />
+    // <script src="/assets/de91f6d25eedcebf54ecdac04a54490c.js"></script>
 
