@@ -13,7 +13,7 @@ The Asset is port (in future) of RoR Asset Pipeline gem file. Now you can use th
 - Css
 - CoffeeScript
 - Js
-- and Css minify helper
+- JS and Css minifiers
 
 ## Installation
 
