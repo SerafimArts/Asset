@@ -1,7 +1,7 @@
 Asset
 =====
 Asset Pipline port for PHP.
-version 1.1.1
+version 1.1.2
 
 https://packagist.org/packages/serafim/asset
 
@@ -47,8 +47,8 @@ Add the following dependencies to your projects composer.json file:
     });
 
     
-    // Compass example (this is example, ScssCompass class does not exist)
-    Asset\Trigger::adaptor('scss', function($source){
-        return (new \ScssCompass($source))->compile();
+    // JS minfy example (thanks to linkorb/jsmin-php package)
+    Trigger::js(function($source){
+        return \JSMin::minify($source);
     });
 ```
