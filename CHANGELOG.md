@@ -1,3 +1,7 @@
+## 1.1.2
+- fix scss trigger
+- add JSmin package: https://packagist.org/packages/linkorb/jsmin-php
+
 ## 1.1.1
 - fix bug with duplicate sources with more than two compile() method calls
 - add class Trigger
