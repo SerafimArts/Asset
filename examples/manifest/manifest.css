@@ -1,0 +1,10 @@
+/**
+* Require tree:
+* "/*"      - require subdirs
+* "*.scss"  - require by mask
+* Example: require styles/*\/*.scss - require all files scss recursive
+* Manifest announcement: "*= require", "/*= require"
+*
+* Manifest data:
+*= require styles/*\/*.scss
+*/

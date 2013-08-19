@@ -16,6 +16,7 @@ class Config
 {
     const CACHE = 'cache';
     const URL   = 'url';
+    const BASE_PATH = 'base';
     const ENV   = 'env';
     const ENV_DEVELOPMENT   = 'dev';
     const ENV_PRODUCTION    = 'prod';
@@ -26,7 +27,8 @@ class Config
     private $_config = [
         self::CACHE => false,
         self::URL   => '/',
-        self::ENV   => self::ENV_DEVELOPMENT
+        self::ENV   => self::ENV_DEVELOPMENT,
+        self::BASE_PATH => ''
     ];
 
     /**

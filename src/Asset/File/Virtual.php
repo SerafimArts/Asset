@@ -85,4 +85,14 @@ class Virtual
         $adaptor = $this->_adaptor;
         return $adaptor::serialize($data);
     }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public static function ext($name)
+    {
+        $name = explode('.', $name);
+        return end($name);
+    }
 }

@@ -1,3 +1,11 @@
+## 2.0.0
+- Add manifest engine
+- Add finder engine (require by mask and recursive require by mask)
+- Add Config::BASE_PATH
+- Add examples
+- Registry fix (require only unique files)
+
+
 ## 1.1.2
 - fix scss trigger
 - add JSmin package: https://packagist.org/packages/linkorb/jsmin-php

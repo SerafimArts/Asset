@@ -21,6 +21,12 @@ class Cache
     private $_config;
 
     /**
+     * Postfix
+     * @var string
+     */
+    private $_postfix = '';
+
+    /**
      * @param Config $conf
      */
     public function __construct(Config $conf)
@@ -76,7 +82,18 @@ class Cache
     {
         $path = '';
         foreach ($files as $file) { $path .= $file->path(); }
-        return $this->_config->get(Config::CACHE) . md5($path) . '.' . $files[0]->type();
+        return $this->_config->get(Config::CACHE) . md5($path) .
+        $this->_postfix . '.' . $files[0]->type();
+    }
+
+    /**
+     * @param $name
+     * @return $this
+     */
+    public function setPostfix($name)
+    {
+        $this->_postfix = '-' . $name;
+        return $this;
     }
 
     /**
@@ -87,7 +104,8 @@ class Cache
     {
         $path = '';
         foreach ($files as $file) { $path .= $file->path(); }
-        return $this->_config->get(Config::URL) . md5($path) . '.' . $files[0]->type();
+        return $this->_config->get(Config::URL) . md5($path) .
+        $this->_postfix . '.' . $files[0]->type();
     }
 
     /**
