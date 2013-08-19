@@ -51,7 +51,7 @@ Add the following dependencies to your projects composer.json file:
 
     
     // JS minfy example (thanks to linkorb/jsmin-php package)
-    Trigger::js(function($source){
+    Asset\Trigger::js(function($source){
         return \JSMin::minify($source);
     });
 ```
