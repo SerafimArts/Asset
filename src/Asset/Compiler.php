@@ -55,9 +55,12 @@ class Compiler
      */
     public function manifest($file)
     {
+        if ($file[0] == '/') { $file = substr($file, 1); }
+
         $manifest   = new Manifest($this->_config, $file, $this);
         $files      = $manifest->compile();
         array_unshift($files, $file);
+        print_r($files);
         return $this->compile(
             $files,
             pathinfo($file)['filename']

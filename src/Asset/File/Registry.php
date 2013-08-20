@@ -51,7 +51,7 @@ class Registry
     private static function _push($file)
     {
         $ext = Virtual::ext($file);
-        $adaptor = '\\Asset\\Adaptor\\' . ucfirst($ext);
+        $adaptor = trim('\\Asset\\Adaptor\\' . ucfirst($ext));
 
         if (!in_array(md5($file), self::$_existsFiles)) {
             self::$_existsFiles[] = md5($file);

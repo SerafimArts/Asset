@@ -24,7 +24,7 @@ class Js implements ManifestInterface
      */
     public function __construct($source)
     {
-        $p = '#^[//|/\*|\*]=\s*require\s*(.*?)$#misu';
+        $p = '#=\s*require\s*(.*?)$#misu';
         preg_match_all($p, $source, $m);
         $this->_requires = $m[1];
     }
