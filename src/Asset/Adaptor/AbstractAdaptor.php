@@ -79,10 +79,4 @@ abstract class AbstractAdaptor
     {
         return self::$_extensions[self::$type];
     }
-
-    /**
-     * @param $sources
-     * @return mixed
-     */
-    abstract public static function compile($sources);
 }
