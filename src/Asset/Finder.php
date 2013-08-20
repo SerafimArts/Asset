@@ -45,6 +45,7 @@ class Finder
      */
     public function search()
     {
+        $this->_dir = trim($this->_dir);
         if ($this->_search) {
             $result = [];
             $iterator = new \RecursiveIteratorIterator(

@@ -60,7 +60,6 @@ class Compiler
         $manifest   = new Manifest($this->_config, $file, $this);
         $files      = $manifest->compile();
         array_unshift($files, $file);
-        print_r($files);
         return $this->compile(
             $files,
             pathinfo($file)['filename']
