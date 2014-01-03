@@ -4,13 +4,6 @@
     "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minfy"],
     "homepage": "https://github.com/SerafimArts/Asset",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Nesmeyanov Kirill",
-            "email": "serafim@sources.ru",
-            "homepage": "http://serafimarts.ru"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "leafo/lessphp": "dev-master",
@@ -18,10 +11,20 @@
         "coffeescript/coffeescript": "1.3.1",
         "linkorb/jsmin-php": "dev-master"
     },
-    
+    "authors": [
+        {
+            "name": "Nesmeyanov Kirill",
+            "email": "serafim@sources.ru",
+            "homepage": "http://serafimarts.ru"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "Asset": "src/"
         }
-    }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "stable"
 }
