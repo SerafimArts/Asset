@@ -75,4 +75,28 @@ Add the following dependencies to your projects composer.json file:
     //= require path/*/*.coffee
 ```
 
-For details, see the examples dir
+### 6. Laravel Providers
+Add to providers:
+```php
+    Asset\Laravel\AssetServiceProvider
+```
+Make directory:
+```
+    /app/assets/
+```
+
+For scss files, please use directory /app/assets/scss/
+
+Using inside blade:
+```
+<html>
+<head>
+    <title>Laravel App</title>
+    {{app('asset')->manifest('path/to/manifest')}}
+    {{app('asset')->compile('path/to/file')}}
+</head>
+</html>
+```
+
+
+For details, see the ./examples/
