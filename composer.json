@@ -6,10 +6,10 @@
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "leafo/lessphp": "dev-master",
-        "leafo/scssphp": "dev-master",
+        "leafo/lessphp": "v0.4.0",
+        "leafo/scssphp": "v0.0.9",
         "coffeescript/coffeescript": "1.3.1",
-        "linkorb/jsmin-php": "dev-master"
+        "linkorb/jsmin-php": "1.0.0"
     },
     "authors": [
         {
