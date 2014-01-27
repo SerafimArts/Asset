@@ -3,7 +3,7 @@ namespace Asset\File\Serialize;
 
 use Asset\File\Serialize\AbstractSerialize;
 
-class CssSerialize extends AbstractSerialize
+class JsSerialize extends AbstractSerialize
 {
     final public function toSource()
     {
