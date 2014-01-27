@@ -20,8 +20,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Asset": "src/"
+        "psr-4": {
+            "Asset\\": ["src/Asset/"]
         }
     },
     "extra": {
