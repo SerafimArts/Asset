@@ -31,10 +31,18 @@ abstract class AbstractDriver
     public function getDepending()
     {
         preg_match_all('#^//\s*=\s*require\s*(.*?)$#misu', $this->source, $depending);
-        foreach ($depending[1] as $d) {
-            $this->collection->append(
-                $this->file->getPath() . DIRECTORY_SEPARATOR . $d
-            );
+        $this->setDepending($depending[1]);
+    }
+
+    public function setDepending($depending)
+    {
+        foreach ($depending as $d) {
+            $d = (strstr($d, '*'))
+                ? glob($this->file->getPath() . DIRECTORY_SEPARATOR . $d)
+                : [$this->file->getPath() . DIRECTORY_SEPARATOR . $d];
+            foreach ($d as $i) {
+                $this->collection->append($i);
+            }
         }
     }
 
