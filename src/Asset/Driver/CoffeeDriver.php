@@ -3,7 +3,7 @@ namespace Asset\Driver;
 
 use CoffeeScript\Compiler as CSCompiler;
 
-class ScssDriver
+class CoffeeDriver
     extends AbstractDriver
     implements DriverInterface
 {
