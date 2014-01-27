@@ -1,60 +1,38 @@
 <?php
-/**
- * @author Serafim <serafim@sources.ru>
- * @link http://rudev.org/
- * @date 06.08.13 2:06
- * @copyright 2008-2013 RuDev
- * @since 1.0
- */
 namespace Asset;
 
-/**
- * Class Config
- * @package Asset
- */
+use Asset\Helper\SingletonTrait as Singleton;
+
 class Config
 {
-    const CACHE = 'cache';
-    const URL   = 'url';
-    const BASE_PATH = 'base';
-    const ENV   = 'env';
-    const ENV_DEVELOPMENT   = 'dev';
-    const ENV_PRODUCTION    = 'prod';
+    use Singleton;
 
-    /**
-     * @var array
-     */
-    private $_config = [
-        self::CACHE => false,
-        self::URL   => '/',
-        self::ENV   => self::ENV_DEVELOPMENT,
-        self::BASE_PATH => ''
-    ];
+    const PATH_SOURCE = 'sources';
+    const PATH_PUBLIC = 'public';
+    const PATH_TEMP   = 'temp';
+    const PATH_URL    = 'url';
 
-    /**
-     * @param array $config
-     */
-    public function __construct(array $config = [])
+    private $_configs;
+
+    public function __construct(array $configs)
     {
-        $this->_config = array_merge($this->_config, $config);
+        $this->_configs = $configs;
     }
 
-    /**
-     * @return array
-     */
-    public function getKeys()
+    public function find($name)
     {
-        return array_keys($this->_config);
+        return $this->$name;
     }
 
-    /**
-     * @param $conf
-     * @return null
-     */
-    public function get($conf)
+    public function __get($var)
     {
-        if (isset($this->_config[$conf])) {
-            return $this->_config[$conf];
+        if (isset($this->_configs[$var])) {
+            $conf       = $this->_configs[$var];
+            $lastChar   = substr($conf, strlen($conf) - 1, 1);
+            if ($lastChar == '/' || $lastChar == '\\') {
+                return $conf;
+            }
+            return $conf . DIRECTORY_SEPARATOR;
         }
         return null;
     }

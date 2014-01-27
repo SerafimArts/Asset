@@ -1,5 +1,6 @@
 {
     "name": "serafim/asset",
+    "type": "library",
     "description": "Asset Pipleine port for PHP.",
     "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minfy"],
     "homepage": "https://github.com/SerafimArts/Asset",
@@ -19,12 +20,14 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Asset": "src/"
+        "psr-4": {
+            "Asset": ["src/"]
         }
     },
-    "config": {
-        "preferred-install": "dist"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }
