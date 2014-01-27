@@ -37,9 +37,9 @@ abstract class AbstractDriver
     public function setDepending($depending)
     {
         foreach ($depending as $d) {
-            $d = (strstr($d, '*'))
-                ? glob($this->file->getPath() . DIRECTORY_SEPARATOR . $d)
-                : [$this->file->getPath() . DIRECTORY_SEPARATOR . $d];
+            $path = str_replace(['\\', '/'], DIRECTORY_SEPARATOR,
+                $this->file->getPath() . DIRECTORY_SEPARATOR . trim($d));
+            $d = (strstr($path, '*')) ? glob($path) : [$path];
             foreach ($d as $i) {
                 $this->collection->append($i);
             }
