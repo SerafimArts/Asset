@@ -53,7 +53,7 @@ abstract class AbstractDriver
             return file_get_contents($path);
         } else {
             $result = $cb();
-            @mkdir(dirname($path), true);
+            @mkdir(dirname($path), 0666, true);
             file_put_contents($path, $result);
             return $result;
         }
