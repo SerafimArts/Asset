@@ -9,7 +9,6 @@ class Extension
         'less'      => '\\Asset\\Driver\\LessDriver',
         'css'       => '\\Asset\\Driver\\CssDriver',
         'js'        => '\\Asset\\Driver\\JsDriver',
-        'pjs'       => '\\Asset\\Driver\\PjsDriver',
     ];
 
     public static function append($ext, $driver)
