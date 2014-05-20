@@ -39,9 +39,25 @@ Using inside blade:
 <html>
 <head>
     <title>Laravel App</title>
-    {{app('asset')->make('path/to/manifest')}}
+    {{app('asset')->make('path/to/file.scss')}} 
+    <!-- scss extension as example -->
 </head>
 </html>
 ```
 
-For details, see the ./examples/
+### 3. Manifest example
+You can assemble multiple files into one, for this use manifests
+```js
+/* this is sources of manifest.js file */
+// = require vendors/jquery.js
+// = require vendors/*.js
+// = require app/*
+// = requrie add/controllers/*.coffee
+```
+<html>
+<head>
+    <title>Laravel App</title>
+    {{app('asset')->make('assets/js/manifest.js')}}
+</head>
+</html>
+
