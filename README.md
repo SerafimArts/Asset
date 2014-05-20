@@ -45,7 +45,7 @@ Using inside blade:
 </html>
 ```
 
-### 3. Manifest example
+### 3. Manifests
 You can assemble multiple files into one, for this use manifests
 ```js
 /* this is sources of manifest.js file */
