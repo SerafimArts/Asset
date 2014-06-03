@@ -5,13 +5,13 @@ use Asset\File\Serialize\AbstractSerialize;
 
 class CssSerialize extends AbstractSerialize
 {
-    final public function toSource()
+    final public function toSource($args = [])
     {
-        return '<style>' . $this->source . '</style>';
+        return '<style ' . $this->argsToAttrs($args) . '>' . $this->source . '</style>';
     }
 
-    final public function toLink()
+    final public function toLink($args = [])
     {
-        return ' <link href="' . $this->cache() . '" rel="stylesheet" type="text/css" />';
+        return ' <link ' . $this->argsToAttrs($args) . ' href="' . $this->cache() . '" rel="stylesheet" type="text/css" />';
     }
 }

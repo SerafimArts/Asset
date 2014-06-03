@@ -1,6 +1,9 @@
 <?php
 namespace Asset\Driver;
 
+use JSMin;
+use App;
+
 class JsDriver
     extends AbstractDriver
     implements DriverInterface
@@ -10,7 +13,11 @@ class JsDriver
     public function make()
     {
         $this->result = $this->cache($this->source, function(){
-            return $this->source;
+            $result = $this->source;
+            if (App::environment('production')) {
+                $result = JSMin::minify($result);
+            }
+            return $result;
         });
     }
 }

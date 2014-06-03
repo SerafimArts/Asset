@@ -31,12 +31,26 @@ abstract class AbstractSerialize
         return $this->config->find(Config::PATH_URL) . $name;
     }
 
-    public function toSource()
+    protected function argsToAttrs($args)
+    {
+        $result = '';
+        foreach ($args as $name => $val) {
+            $result .= $name . '="' . $val . '" ';
+        }
+        return $result;
+    }
+
+    public function toSource($args = [])
     {
         return $this->source;
     }
 
-    public function toLink()
+    public function toLink($args = [])
+    {
+        return $this->source;
+    }
+
+    public function getSource()
     {
         return $this->source;
     }

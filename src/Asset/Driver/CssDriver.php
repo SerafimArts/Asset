@@ -1,6 +1,9 @@
 <?php
 namespace Asset\Driver;
 
+use CssMin;
+use App;
+
 class CssDriver
     extends AbstractDriver
     implements DriverInterface
@@ -10,7 +13,11 @@ class CssDriver
     public function make()
     {
         $this->result = $this->cache($this->source, function(){
-            return $this->source;
+            $result = $this->source;
+            if (App::environment('production')) {
+                $result = CssMin::minify($result);
+            }
+            return $result;
         });
     }
 }
