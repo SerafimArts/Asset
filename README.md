@@ -1,7 +1,8 @@
-Asset
-=====
 ## @DEPRECATED
 Please use the [new version](https://github.com/SerafimArts/Assets) of this package
+
+Asset
+=====
 
 
 Asset Pipline port for PHP.
