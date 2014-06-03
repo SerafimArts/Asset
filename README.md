@@ -1,4 +1,7 @@
 #### @DEPRECATED: Please use the [new version](https://github.com/SerafimArts/Assets) of this package
+This version will be deleted after 20.06.2014
+
+
 
 Asset
 =====
