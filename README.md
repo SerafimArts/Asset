@@ -1,5 +1,4 @@
-## @DEPRECATED
-Please use the [new version](https://github.com/SerafimArts/Assets) of this package
+#### @DEPRECATED: Please use the [new version](https://github.com/SerafimArts/Assets) of this package
 
 Asset
 =====
