@@ -1,5 +1,9 @@
 Asset
 =====
+## @DEPRECATED
+Please use the [new version](https://github.com/SerafimArts/Assets) of this package
+
+
 Asset Pipline port for PHP.
 version 3.0.0
 
