@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.4.0",
         "linkorb/jsmin-php":                "1.0.0",
-        "natxet/CssMin":                    "3.0.2"
+        "natxet/CssMin":                    "dev-master"
     },
     "suggest": {
         "coffeescript/coffeescript": "Compatible CoffeeScript compiler",
