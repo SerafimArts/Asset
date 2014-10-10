@@ -3,7 +3,7 @@ Asset
 #### Asset Compiler for Laravel 4
 [Composer package](https://packagist.org/packages/serafim/asset)
 
-[todo](https://github.com/SerafimArts/Asset/wiki/@TODO)
+[@todo list](https://github.com/SerafimArts/Asset/wiki/@TODO)
 
 
 ### Other languages
