@@ -13,7 +13,7 @@
     },
     "suggest": {
         "coffeescript/coffeescript": "Compatible CoffeeScript compiler",
-        "leafo/scssphp": "Compatible Scss compiler",
+        "leafo/scssphp": "Compatible Scss compiler (v0.0.12)",
         "leafo/lessphp": "Compatible Less compiler"
     },
     "authors": [
