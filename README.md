@@ -24,7 +24,7 @@ Asset
 1) Make Asset directories:
 ```
 app/
-    Asset/
+    assets/
         javascripts/
         stylesheets/
     
