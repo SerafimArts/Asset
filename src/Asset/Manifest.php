@@ -3,7 +3,7 @@
 /**
  * This file is part of Asset package.
  *
- * serafim <nesk@xakep.ru> (03.06.2014 13:21)
+ * Serafim <nesk@xakep.ru> (03.06.2014 13:21)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,7 +39,7 @@ class Manifest
      */
     public function make($path, $recursive = false)
     {
-        $full = $this->_config->get(Config::C_Asset_PATH, '/' . $path);
+        $full = $this->_config->get(Config::C_ASSETS_PATH, '/' . $path);
 
         if (!file_exists($full)) {
             throw new Exception(
