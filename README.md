@@ -1,7 +1,7 @@
 Asset
 =====
 #### Asset Compiler for Laravel 4
-[Composer package](https://packagist.org/packages/serafim/Asset)
+[Composer package](https://packagist.org/packages/serafim/asset)
 
 
 ### Installation
@@ -9,7 +9,7 @@ Asset
 ```json
 {
     "require": {
-        "serafim/Asset": "dev-master"
+        "serafim/asset": "dev-master"
     }
 }
 ```
@@ -37,8 +37,8 @@ app/
 <html>
 <head>
     <title>Example</title>
-    {{app('Asset')->make('javascripts/file.js')}}
-    {{app('Asset')->make('stylesheets/some.scss')}}
+    {{app('asset')->make('javascripts/file.js')}}
+    {{app('asset')->make('stylesheets/some.scss')}}
 </head>
 <body>
 </body>
@@ -73,7 +73,7 @@ Return inline tag (example: `<style>body{}</style>`)
 ->make('path/to/file')->getInline([array $htmlAttributes = array()]);
 ```
 
-Return full asset path (example: `/var/www/public/Asset/hash.js`)
+Return full asset path (example: `/var/www/public/asset/hash.js`)
 ```php
 ->make('path/to/file')->getSourcesPath();
 ```

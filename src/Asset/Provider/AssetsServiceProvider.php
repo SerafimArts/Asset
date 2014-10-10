@@ -14,7 +14,7 @@ use Asset\Manifest;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class AsseterviceProvider
+ * Class AssetServiceProvider
  * @package Asset\Provider
  */
 class AssetServiceProvider extends ServiceProvider
@@ -29,7 +29,7 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('serafim/Asset');
+        $this->package('serafim/asset');
     }
 
     /**
@@ -37,7 +37,7 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['Asset'] = $this->app->share(
+        $this->app['asset'] = $this->app->share(
             function ($app) {
                 return $this->getCompiler();
             }
@@ -51,10 +51,10 @@ class AssetServiceProvider extends ServiceProvider
     {
         $config = new Config(
             [
-                Config::C_Asset_PATH => app_path('Asset'),
-                Config::C_PUBLIC_HTTP => '/Asset',
-                Config::C_CACHE_PATH => storage_path('Asset'),
-                Config::C_PUBLIC_PATH => public_path('Asset')
+                Config::C_Asset_PATH => app_path('assets'),
+                Config::C_PUBLIC_HTTP => '/assets',
+                Config::C_CACHE_PATH => storage_path('assets'),
+                Config::C_PUBLIC_PATH => public_path('assets')
             ]
         );
 
