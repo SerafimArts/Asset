@@ -1,23 +1,44 @@
-<?php
-namespace Asset\Driver;
+<?php namespace Asset\Driver;
 
-use JSMin;
-use App;
+/**
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 14:03)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+
+/**
+ * Class CssDriver
+ * @package Asset\Driver
+ */
 class JsDriver
     extends AbstractDriver
     implements DriverInterface
 {
-    protected $type = self::TYPE_JS;
+    /**
+     * @var string
+     */
+    protected static $extensions = ['js'];
+    /**
+     * @var string
+     */
+    protected $type = self::TYPE_SCRIPT;
+    /**
+     * @var string
+     */
+    protected $patterns = [
+        '\/\/\s*=\s*require\s+{file}',
+        'require\s*\(\s*{file}\);?'
+    ];
 
-    public function make()
+    /**
+     * @return mixed
+     */
+    public function parse()
     {
-        $this->result = $this->cache($this->source, function(){
-            $result = $this->source;
-            if (App::environment('production')) {
-                $result = JSMin::minify($result);
-            }
-            return $result;
-        });
+        return $this->getSources();
     }
 }

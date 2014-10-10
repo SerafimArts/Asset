@@ -1,14 +1,15 @@
-<?php
-namespace Asset\Driver;
+<?php namespace Asset\Driver;
 
-use SplFileObject;
-use Asset\File\Collection;
+/**
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 16:10)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 interface DriverInterface
 {
-    public function __construct(Collection $items, SplFileObject $file);
-    public function getDepending();
-    public function make();
-    public function getResult();
-    public function getType();
+    public function parse();
 }

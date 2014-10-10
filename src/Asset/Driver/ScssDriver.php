@@ -1,13 +1,18 @@
-<?php
-namespace Asset\Driver;
+<?php namespace Asset\Driver;
 
-use App;
-use CssMin;
-// use scss_compass as Compass;
+/**
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 14:03)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use scssc as ScssCompiler;
 
 /**
- * Class ScssDriver
+ * Class CssDriver
  * @package Asset\Driver
  */
 class ScssDriver
@@ -17,34 +22,23 @@ class ScssDriver
     /**
      * @var string
      */
-    protected $type = self::TYPE_CSS;
+    protected static $extensions = ['scss'];
+    /**
+     * @var string
+     */
+    protected $type = self::TYPE_STYLE;
+    /**
+     * @var string
+     */
+    protected $patterns = [];
 
     /**
-     * Build styles
+     * @return mixed
      */
-    public function make()
-    {
-        $this->result = App::environment('production')
-            ? $this->cache($this->source, function () {
-                return $this->compile();
-            })
-            : $this->compile();
-    }
-
-    /**
-     * @return string
-     */
-    protected function compile()
+    public function parse()
     {
         $scss = new ScssCompiler();
-        $scss->setImportPaths($this->file->getPath());
-        // new Compass($scss);
-        $result = $scss->compile($this->source);
-
-        if (App::environment('production')) {
-            $result = CssMin::minify($result);
-        }
-
-        return $result;
+        $scss->setImportPaths(dirname($this->getPath()));
+        return $scss->compile($this->getSources());
     }
 }

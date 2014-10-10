@@ -1,12 +1,19 @@
-<?php
-namespace Asset\Driver;
-
-use App;
-use CoffeeScript\Compiler as CSCompiler;
-use JSMin;
+<?php namespace Asset\Driver;
 
 /**
- * Class CoffeeDriver
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 14:03)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use CoffeeScript\Compiler as CoffeeScriptCompiler;
+
+
+/**
+ * Class CssDriver
  * @package Asset\Driver
  */
 class CoffeeDriver
@@ -16,23 +23,33 @@ class CoffeeDriver
     /**
      * @var string
      */
-    protected $type = self::TYPE_JS;
+    protected static $extensions = ['coffee'];
 
     /**
-     * Build stylesheets
+     * @var string
      */
-    public function make()
+    protected $type = self::TYPE_SCRIPT;
+
+    /**
+     * @var string
+     */
+    protected $patterns = [
+        '#\s*=\s*require\s+{file}',
+        'require\s+{file};?',
+        'require\s*\(\s*{file}\);?'
+    ];
+
+    /**
+     * @return mixed
+     */
+    public function parse()
     {
-        $this->result = $this->cache($this->source, function () {
-            $result = CSCompiler::compile(
-                $this->source, ['filename' => $this->file->getFilename()]
-            );
-
-            if (App::environment('production')) {
-                $result = JSMin::minify($result);
-            }
-
-            return $result;
-        });
+        return CoffeeScriptCompiler::compile(
+            $this->getSources(),
+            [
+                'filename' => $this->getPath(),
+                'header' => false
+            ]
+        );
     }
 }

@@ -1,2 +1,4 @@
 /.idea
-/test
+/vendor
+/*.iml
+/composer.lock

@@ -1,41 +1,44 @@
-<?php
-namespace Asset\Driver;
+<?php namespace Asset\Driver;
+
+/**
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 14:03)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 use lessc as LessCompiler;
-use CssMin;
-use App;
 
+
+/**
+ * Class CssDriver
+ * @package Asset\Driver
+ */
 class LessDriver
     extends AbstractDriver
     implements DriverInterface
 {
-    protected $type = self::TYPE_CSS;
-
+    /**
+     * @var string
+     */
+    protected static $extensions = ['less'];
+    /**
+     * @var string
+     */
+    protected $type = self::TYPE_STYLE;
+    /**
+     * @var string
+     */
+    protected $patterns = [];
 
     /**
-     * Build styles
+     * @return mixed
      */
-    public function make()
-    {
-        $this->result = App::environment('production')
-            ? $this->cache($this->source, function () {
-                    return $this->compile();
-                })
-            : $this->compile();
-    }
-
-    /**
-     * @return string
-     */
-    protected function compile()
+    public function parse()
     {
         $less = new LessCompiler();
-        $result = $less->compile($this->source);
-
-        if (App::environment('production')) {
-            $result = CssMin::minify($result);
-        }
-
-        return $result;
+        return $less->compile($this->getSources());
     }
 }

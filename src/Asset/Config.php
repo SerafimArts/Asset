@@ -1,39 +1,70 @@
-<?php
-namespace Asset;
+<?php namespace Asset;
 
-use Asset\Helper\SingletonTrait as Singleton;
+/**
+ * This file is part of Asset package.
+ *
+ * serafim <nesk@xakep.ru> (03.06.2014 13:24)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+use App;
+use Exception;
+
+/**
+ * Class Config
+ * @package Asset
+ */
 class Config
 {
-    use Singleton;
+    const C_PUBLIC_HTTP = 'public.http';
+    const C_PUBLIC_PATH = 'public.path';
+    const C_CACHE_PATH = 'cache.path';
+    const C_Asset_PATH = 'Asset.path';
+    const C_MINIFY = 'minify';
 
-    const PATH_SOURCE = 'sources';
-    const PATH_PUBLIC = 'public';
-    const PATH_TEMP   = 'temp';
-    const PATH_URL    = 'url';
+    /**
+     * @var array
+     */
+    private $_config = [
+        self::C_PUBLIC_HTTP => '',
+        self::C_PUBLIC_PATH => '',
+        self::C_CACHE_PATH => '',
+        self::C_Asset_PATH => '',
+        self::C_MINIFY => false
+    ];
 
-    private $_configs;
-
-    public function __construct(array $configs)
+    /**
+     * @param array $args
+     * @throws \Exception
+     */
+    public function __construct($args = [])
     {
-        $this->_configs = $configs;
-    }
-
-    public function find($name)
-    {
-        return $this->$name;
-    }
-
-    public function __get($var)
-    {
-        if (isset($this->_configs[$var])) {
-            $conf       = $this->_configs[$var];
-            $lastChar   = substr($conf, strlen($conf) - 1, 1);
-            if ($lastChar == '/' || $lastChar == '\\') {
-                return $conf;
+        foreach ($args as $type => $val) {
+            if (isset($this->_config[$type])) {
+                $this->_config[$type] = $val;
+            } else {
+                throw new Exception('Undefined config variable ' . $type);
             }
-            return $conf . DIRECTORY_SEPARATOR;
         }
-        return null;
+
+        if (!isset($args[self::C_MINIFY])) {
+            $this->_config[self::C_MINIFY] = App::environment('production');
+        }
+    }
+
+    /**
+     * @param $name
+     * @param string $append
+     * @return mixed
+     * @throws \Exception
+     */
+    public function get($name, $append = '')
+    {
+        if (isset($this->_config[$name])) {
+            return $this->_config[$name] . $append;
+        }
+        throw new Exception('Undefined config key ' . $name);
     }
 }
