@@ -4,7 +4,7 @@ Asset
 
 
 - [TODO](https://github.com/SerafimArts/Asset/wiki/@TODO)
-- [Russian](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)
+- [Readme RU](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)
 
 
 ### Installation
