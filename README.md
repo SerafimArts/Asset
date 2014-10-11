@@ -1,14 +1,6 @@
 Asset
 =====
-#### Asset Compiler for Laravel 4
-[Composer package](https://packagist.org/packages/serafim/asset)
-
-[@todo list](https://github.com/SerafimArts/Asset/wiki/@TODO)
-
-
-### Other languages
-- [Russian](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)
-
+[@TODO](https://github.com/SerafimArts/Asset/wiki/@TODO) [DOCS Russian](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README) [Composer package](https://packagist.org/packages/serafim/asset)
 
 ### Installation
 1) Insert package name inside your `composer.json` file and update composer vendors.
