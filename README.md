@@ -1,6 +1,6 @@
 Asset
 =====
-[@TODO](https://github.com/SerafimArts/Asset/wiki/@TODO) [DOCS Russian](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README) [Composer package](https://packagist.org/packages/serafim/asset)
+[[@TODO](https://github.com/SerafimArts/Asset/wiki/@TODO)] [[DOCS Russian](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)] [[Composer package](https://packagist.org/packages/serafim/asset)]
 
 ### Installation
 1) Insert package name inside your `composer.json` file and update composer vendors.
