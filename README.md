@@ -6,6 +6,13 @@ Asset
 - [TODO](https://github.com/SerafimArts/Asset/wiki/TODO)
 - [Russian Readme](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)
 
+### Available extensions
+ - css
+ - js
+ - scss
+ - sass
+ - less
+ - coffee
 
 ### Installation
 1) Insert package name inside your `composer.json` file and update composer vendors.
@@ -19,9 +26,12 @@ Asset
 
 2) Add provider line inside `config/app.php`
 ```
-'Asset\Provider\AssetServiceProvider'
+'Serafim\Asset\Laravel\AssetServiceProvider'
 ```
-
+and
+```
+'Asset' => 'Serafim\Asset\Laravel\AssetFacade'
+```
 
 ### Usage
 1) Make Asset directories:
@@ -40,8 +50,8 @@ app/
 <html>
 <head>
     <title>Example</title>
-    {{app('asset')->make('javascripts/file.js')}}
-    {{app('asset')->make('stylesheets/some.scss')}}
+    {{asset_link('javascripts/file.js')}}
+    {{asset_link('stylesheets/some.scss')}}
 </head>
 <body>
 </body>
@@ -54,41 +64,47 @@ app/
 ### Manifest syntax
 You can collect several files into one, using a special syntax inclusions within files.
 ```js
+// Require one file
 // = require filename.js
-// = require path/to/file.coffee 
 
-Some features not implemented yet:
+// Require another file
+// = require path/to/file.coffee
+
+// Require all files in dir
 // = require all/path/*
+
+// Require all files in dir recursive
 // = require all/path/recursive/**
+
+// Require all files with extension
 // = require all/files/with/extension/*.js
+
+// Require all files with extension recursive
+// = require all/files/with/extension/**.js
 ```
 
 
 ### Serialization interface
 
-Read manifest recursively (inside included files)
+Read manifest
 ```php
-->make('path/to/file' [, bool $includeRecursive = false]);
+Asset::make('path/to/file.any'); // or asset_link('path/to/file', [array $htmlAttributes = array()])
 ```
 
 Return inline tag (example: `<style>body{}</style>`)
 ```php
-->make('path/to/file')->getInline([array $htmlAttributes = array()]);
-```
-
-Return full asset path (example: `/var/www/public/asset/hash.js`)
-```php
-->make('path/to/file')->getSourcesPath();
+Asset::make('path/to/file')->getInline([array $htmlAttributes = array()]);
+// or asset_source('path/to/file', [array $htmlAttributes = array()])
 ```
 
 Return sources
 ```php
-->make('path/to/file')->getSources();
+Asset::make('path/to/file')->getSources();
 ```
 
 Return link tag (example: `<script src="path/to/compiled.file.js"></script>`)
 ```php
-->make('path/to/file')->getLink([array $htmlAttributes = array()]);
+Asset::make('path/to/file')->getLink([array $htmlAttributes = array()]);
 
 // alias: ->__toString();
 ```
