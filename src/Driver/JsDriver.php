@@ -22,15 +22,6 @@ class JsDriver
 {
     /**
      * @param SplFileInfo $file
-     * @return mixed|string
-     */
-    public function compile(SplFileInfo $file)
-    {
-        return $file->getContents();
-    }
-
-    /**
-     * @param SplFileInfo $file
      * @return mixed|JsSerialize|void
      */
     public static function getSerializationInterface(SplFileInfo $file)

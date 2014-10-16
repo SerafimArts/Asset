@@ -102,7 +102,12 @@ class Parser
             $content = str_replace($line, $split, $content);
         }
 
-        return $content;
+        return $this->compiler->build(
+            $this->file,
+            $this->getDriver($this->file->getFilename()),
+            $content
+        );
+
     }
 
     /**
@@ -136,8 +141,7 @@ class Parser
                 foreach ($this->rules as $rule) {
                     if ($rule::match($m[1][$i])) {
                         $rule = (new $rule($this->file, $m[1][$i], $this->uniqueFiles));
-
-                        $rules[$m[0][$i]]   = $rule->getFiles();
+                        $rules[$m[0][$i]] = $rule->getFiles();
 
                         if ($this->compiler->getConfig()['unique']) {
                             $this->uniqueFiles  = array_merge(
@@ -145,11 +149,12 @@ class Parser
                                 $rule->getRelatives()
                             );
                         }
-                        continue;
+                        break;
                     }
                 }
             }
         }
+
 
         return $rules;
     }

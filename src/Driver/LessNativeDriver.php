@@ -39,9 +39,12 @@ class LessNativeDriver
      * @return string
      * @throws \CoffeeScript\Error
      */
-    public function compile(SplFileInfo $file)
+    public function compile(SplFileInfo $file, $content = null)
     {
-        $content = $file->getContents();
+        $content = ($content === null)
+            ? $file->getContents()
+            : $content;
+
         $less = new LessCompiler;
         $less->setImportDir([dirname($file->getRealPath())]);
         return $less->compile($content);

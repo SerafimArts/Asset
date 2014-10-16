@@ -44,7 +44,6 @@ class AssetServiceProvider extends ServiceProvider
         require_once __DIR__ . self::HELPERS_PATH;
 
         $this->app['asset'] = $this->app->share(function ($app) {
-            #dd($app->config->get('asset::config'));
             $compiler = new Compiler($app, $this->getConfigs($app));
             $app['events']->fire(Compiler::EVENT_BOOT, $compiler);
 

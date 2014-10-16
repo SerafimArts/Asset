@@ -9,26 +9,38 @@
  */
 
 return [
+    // requie only unique files
     'unique' => true,
 
+    // do not check file updates if file already exists
     'cache'  => (bool)App::environment('production'),
 
-    'path' => [
-        'public'  => public_path('assets'),
+    // generate /path/file (original) or /path/{HASH}/{HASH}/file (advanced) paths
+    'publish' => 'advanced',
 
+    'path' => [
+        // sources directory path
         'sources' => app_path('assets'),
 
+        // public directory path
+        'public'  => public_path('assets'),
+
+        // assets url
         'url'     => '/assets',
     ],
 
     'minify' => [
+        // enable minification
         'enable'      => (bool)App::environment('production'),
 
+        // javascript minify driver
         'javascripts' => 'Serafim\\Asset\\Minify\\JsNativeMinify',
 
+        // stylesheet minify driver
         'stylesheets' => 'Serafim\\Asset\\Minify\\CssNativeMinify',
     ],
 
+    // drivers for file extensions (DriverName => [extension-1, extension-2])
     'drivers' => [
         'Serafim\\Asset\\Driver\\CoffeeNativeDriver' => ['coffee'],
 

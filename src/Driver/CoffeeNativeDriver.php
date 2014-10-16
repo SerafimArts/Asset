@@ -46,9 +46,11 @@ class CoffeeNativeDriver
      * @return string
      * @throws \CoffeeScript\Error
      */
-    public function compile(SplFileInfo $file)
+    public function compile(SplFileInfo $file, $content = null)
     {
-        $content = $file->getContents();
+        $content = ($content === null)
+            ? $file->getContents()
+            : $content;
         return CSCompiler::compile($content, [
             'filename' => $file->getRelativePathname(),
             'header' => false

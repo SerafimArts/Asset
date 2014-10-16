@@ -39,9 +39,12 @@ class SassNativeDriver
      * @return string
      * @throws \CoffeeScript\Error
      */
-    public function compile(SplFileInfo $file)
+    public function compile(SplFileInfo $file, $content = null)
     {
-        $content = $file->getContents();
+        $content = ($content === null)
+            ? $file->getContents()
+            : $content;
+
         $sass = new SassCompiler([
             'syntax' => 'sass',
             'cache' => false,

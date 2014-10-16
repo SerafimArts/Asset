@@ -137,6 +137,6 @@ class MultipleRequireRule
      */
     public static function match($path)
     {
-        return preg_match('#^.*?/\*(\*?)(\.[a-z]+)?$#u', $path);
+        return preg_match('#^.*?/\*(\*?)(\.[a-z]+)?$#isu', $path);
     }
 }

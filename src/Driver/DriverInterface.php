@@ -22,7 +22,7 @@ interface DriverInterface
      * @param SplFileInfo $file
      * @return mixed
      */
-    public function compile(SplFileInfo $file);
+    public function compile(SplFileInfo $file, $content = null);
 
     /**
      * @return mixed

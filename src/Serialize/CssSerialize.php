@@ -38,7 +38,7 @@ class CssSerialize
      */
     public function toLink(array $options = [])
     {
-        return $this->createTag('style', array_merge($options, [
+        return $this->createTag('link', array_merge($options, [
             'href'  => $this->url,
             'rel'   => 'stylesheet',
             'type'  => 'text/css'

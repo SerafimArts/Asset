@@ -39,10 +39,15 @@ class ScssNativeDriver
      * @return string
      * @throws \CoffeeScript\Error
      */
-    public function compile(SplFileInfo $file)
+    public function compile(SplFileInfo $file, $content = null)
     {
-        $content = $file->getContents();
+        $content = ($content === null)
+            ? $file->getContents()
+            : $content;
+
         $scss = new ScssCompiler;
+        #dd(' ====================================================' . "\n" .
+        #    $file->getRealPath() . ' => ' . dirname($file->getRealPath()) . "\n\n\n");
         $scss->setImportPaths([dirname($file->getRealPath())]);
         return $scss->compile($content, $file->getFilename());
     }

@@ -19,12 +19,5 @@ class PlainDriver
     extends AbstractDriver
     implements DriverInterface
 {
-    /**
-     * @param SplFileInfo $file
-     * @return mixed|string
-     */
-    public function compile(SplFileInfo $file)
-    {
-        return $file->getContents();
-    }
+
 }

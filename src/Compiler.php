@@ -75,11 +75,11 @@ class Compiler
         }
 
 
-        $spl        = new SplFileInfo($path, dirname($file), $file);
-        $driver     = $this->getDriver($spl->getFilename());
-        $serialize  = $driver::getSerializationInterface($spl);
+        $spl = new SplFileInfo($path, dirname($file), $file);
+        $driver = $this->getDriver($spl->getFilename());
+        $serialize = $driver::getSerializationInterface($spl);
 
-        $asset      = $this->getAssetFilePath($spl, $serialize->getExtension());
+        $asset = $this->getAssetFilePath($spl, $serialize->getExtension());
 
         if (file_exists($asset->target) && $this->config['cache']) {
             $sources = file_get_contents($asset->target);
@@ -116,13 +116,15 @@ class Compiler
      */
     protected function getAssetFilePath(SplFileInfo $file, $extension)
     {
-        $md5  = md5($file->getContents());
+        $md5 = md5($file->getContents());
         $name = str_replace('.' . $file->getExtension(), '', $file->getFilename());
-        $path =
-            substr($md5, 0, 2)  . '/' .
-            substr($md5, 2, 2)  . '/' .
-            substr($md5, 4, 16) . '-' .
-            $name . $extension;
+
+        $path = ($this->config['publish'] == 'advanced')
+            ? substr($md5, 0, 2) . '/' .
+              substr($md5, 2, 2) . '/' .
+              substr($md5, 4, 16) . '-' .
+                $name . $extension
+            : $md5 . '-' . $name . $extension;
 
         return (object)[
             'url'       => $this->config['path']['url'] . '/' . $path,
@@ -136,18 +138,32 @@ class Compiler
      * @param $driver
      * @return mixed
      */
-    public function build(SplFileInfo $file, $driver)
+    public function build(SplFileInfo $file, $driver, $content = null)
     {
-        $key = md5($file->getContents());
+        try {
+            $key = md5($file->getContents());
+        } catch (\Exception $e) {
+            die();
+            throw new FileNotFoundException('Can not read content of "' . $file->getRelativePathname() . '" file.');
+        }
+
         return $this
             ->app['cache']
-            ->rememberForever($key, function() use($file, $driver) {
-                $this
-                    ->app['events']
-                    ->fire(Compiler::EVENT_COMPILE, $file);
-                return $driver
-                    ->compile($file);
-            });
+            ->rememberForever(
+                $key,
+                function () use ($file, $driver, $content) {
+                    try {
+                        $this
+                            ->app['events']
+                            ->fire(Compiler::EVENT_COMPILE, $file);
+                        return $driver
+                            ->compile($file, $content);
+                    } catch (\Exception $e) {
+                        throw new \Exception('Internal compiler error: ' . $e->getMessage());
+                    }
+                }
+            );
+
     }
 
     /**

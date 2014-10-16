@@ -31,6 +31,18 @@ abstract class AbstractDriver
     ];
 
     /**
+     * @param SplFileInfo $file
+     * @return mixed|string
+     */
+    public function compile(SplFileInfo $file, $content = null)
+    {
+        if ($content === null) {
+            return $file->getContents();
+        }
+        return $content;
+    }
+
+    /**
      * @param string $file
      * @return array
      */

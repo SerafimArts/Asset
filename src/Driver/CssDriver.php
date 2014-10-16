@@ -22,15 +22,6 @@ class CssDriver
 {
     /**
      * @param SplFileInfo $file
-     * @return mixed|string
-     */
-    public function compile(SplFileInfo $file)
-    {
-        return $file->getContents();
-    }
-
-    /**
-     * @param SplFileInfo $file
      * @return mixed|CssSerialize|void
      */
     public static function getSerializationInterface(SplFileInfo $file)
