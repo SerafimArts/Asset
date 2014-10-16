@@ -30,8 +30,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Asset": "src/"
+        "psr-4": {
+            "Serafim\\Asset\\": "src/Serafim/Asset"
         }
     },
     "extra": {
