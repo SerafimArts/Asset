@@ -1,0 +1,5 @@
+{
+  "providers": [
+    "Serafim\Asset\Laravel\AssetServiceProvider"
+  ]
+}
