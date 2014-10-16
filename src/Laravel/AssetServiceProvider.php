@@ -20,7 +20,7 @@ use Serafim\Asset\Compiler;
  */
 class AssetServiceProvider extends ServiceProvider
 {
-    const CONFIG_PATH   = '/../../../config/config.php';
+    const CONFIG_PATH   = '/../config/config.php';
     const HELPERS_PATH  = '/../helpers.php';
 
     /**
