@@ -48,7 +48,6 @@ class CoffeeNativeDriver
      */
     public function compile(SplFileInfo $file)
     {
-        dd($file->getRealPath());
         $content = $file->getContents();
         return CSCompiler::compile($content, [
             'filename' => $file->getRelativePathname(),
