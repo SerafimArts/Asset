@@ -71,7 +71,7 @@ class Compiler
     {
         $path = $this->config['path']['sources'] . '/' . $file;
         if (!file_exists($path)) {
-            throw new FileNotFoundException("File ${file} not found.");
+            throw new FileNotFoundException("File ${path} not found.");
         }
 
 
