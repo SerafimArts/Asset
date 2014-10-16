@@ -141,9 +141,8 @@ class Compiler
     public function build(SplFileInfo $file, $driver, $content = null)
     {
         try {
-            $key = md5($file->getContents());
+            $key = md5($file->getRelativePathname() . $file->getContents());
         } catch (\Exception $e) {
-            die();
             throw new FileNotFoundException('Can not read content of "' . $file->getRelativePathname() . '" file.');
         }
 
