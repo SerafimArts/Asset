@@ -81,6 +81,9 @@ You can collect several files into one, using a special syntax inclusions within
 
 // Require all files with extension recursive
 // = require all/files/with/extension/**.js
+
+// Require all any.js inside some/* directories 
+// = require some/*/any.js
 ```
 
 
