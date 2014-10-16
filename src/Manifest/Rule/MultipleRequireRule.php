@@ -108,13 +108,12 @@ class MultipleRequireRule
                 $finder->depth('== 0');
             }
 
-            foreach ($this->ignore as $ignore) {
-                $finder->notName($ignore);
+            $this->files = [];
+            foreach ($finder->getIterator() as $file) {
+                if (!in_array(str_replace('\\', '/', $file->getRealPath()), $this->ignore)) {
+                    $this->files[] = $file;
+                }
             }
-
-            $this->files = iterator_to_array(
-                $finder->getIterator()
-            );
         }
         return $this->files;
     }
@@ -126,7 +125,7 @@ class MultipleRequireRule
     {
         $result = [];
         foreach ($this->getFiles() as $file) {
-            $result[] = $file->getRelativePathname();
+            $result[] = str_replace('\\', '/', $file->getRealPath());
         }
         return $result;
     }

@@ -60,7 +60,7 @@ class RequireRule
     public function getFiles()
     {
         if (!$this->files) {
-            if (!in_array($this->file->getRelativePathname(), $this->ignore)) {
+            if (!in_array(str_replace('\\', '/', $this->file->getRealPath()), $this->ignore)) {
                 $this->files = [$this->file];
             }
         }
@@ -72,7 +72,7 @@ class RequireRule
      */
     public function getRelatives()
     {
-        return [$this->files[0]->getRelativePathname()];
+        return [str_replace('\\', '/', $this->files[0]->getRealPath())];
     }
 
     /**
