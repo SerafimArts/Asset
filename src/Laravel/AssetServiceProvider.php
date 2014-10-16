@@ -33,7 +33,7 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('serafim/asset', 'asset', __DIR__);
+        $this->package('serafim/asset', 'asset', __DIR__ . '/..');
     }
 
     /**
