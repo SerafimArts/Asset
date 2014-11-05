@@ -14,9 +14,9 @@ use Serafim\Asset\Driver\AbstractDriver;
 
 class CssDriver extends AbstractDriver
 {
-    public function compile($sources, $cache)
+    public function compile($sources, $app)
     {
-        return $this->cache($cache, function() use ($sources) {
+        return $this->cache($app, function() use ($sources) {
             return $sources;
         });
     }

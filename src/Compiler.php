@@ -21,10 +21,6 @@ use SplFileInfo;
  */
 class Compiler
 {
-    const EVENT_BOOT    = 'asset.boot';
-    const EVENT_COMPILE = 'asset.compile';
-    const EVENT_PUBLISH = 'asset.publish';
-
     /**
      * @var
      */
@@ -59,11 +55,8 @@ class Compiler
         );
 
         if (!$this->configs['cache'] || !$file->exists()) {
-            $sources = $file->compile($this->app);
-            if (!is_dir(dirname($file->getPublicPath()))) {
-                mkdir(dirname($file->getPublicPath()), 0777, true);
-            }
-            file_put_contents($file->getPublicPath(), $sources);
+            $file->publish($file->compile($this->app));
+            $this->app['events']->fire(Events::PUBLISH, $file);
         }
 
         return $file->getOutputInterface();

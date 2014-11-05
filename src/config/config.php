@@ -17,9 +17,11 @@ return [
         app_path('assets'),
         app_path('assets/javascripts'),
         app_path('assets/stylesheets'),
+        app_path('assets/images'),
         base_path('lib/assets'),
         base_path('lib/assets/javascripts'),
         base_path('lib/assets/stylesheets'),
+        base_path('lib/assets/images'),
     ],
 
     'public' => public_path('assets'),
@@ -34,11 +36,17 @@ return [
         'Serafim\\Asset\\Driver\\SassPhpDriver'     => ['sass'],
         'Serafim\\Asset\\Driver\\LessPhpDriver'     => ['less'],
         'Serafim\\Asset\\Driver\\CssPhpDriver'      => ['css'],
+
+        'Serafim\\Asset\\Driver\\ImageDriver'      => ['jpg', 'png', 'gif'],
     ],
 
     'output' => [
         'js'    => 'Serafim\\Asset\\Serialize\\JsSerialize',
         'css'   => 'Serafim\\Asset\\Serialize\\CssSerialize',
+
+        'jpg'   => 'Serafim\\Asset\\Serialize\\ImageSerialize',
+        'png'   => 'Serafim\\Asset\\Serialize\\ImageSerialize',
+        'gif'   => 'Serafim\\Asset\\Serialize\\ImageSerialize',
     ],
 
     'minify' => [

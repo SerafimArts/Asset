@@ -9,27 +9,31 @@
  */ 
 namespace Serafim\Asset\Driver;
 
-use SplFileInfo;
+use Serafim\Asset\Compiler\File;
+use Serafim\Asset\Events;
 
 abstract class AbstractDriver
 {
     protected $file;
+    protected $container;
 
-    public function __construct(SplFileInfo $file)
+    public function __construct(File $file)
     {
-        $this->file = $file;
+        $this->file = $file->getSplFileInfo();
+        $this->container = $file;
     }
 
 
-    protected function cache($driver, callable $make)
+    protected function cache($app, callable $make)
     {
         $hash = 'assets@' . md5_file($this->file->getRealPath());
-        return $driver->rememberForever($hash, function() use ($make) {
+        return $app['cache']->rememberForever($hash, function() use ($make, $app) {
+            $app['events']->fire(Events::COMPILE, $this->container);
             return $make();
         });
     }
 
-    public function compile($sources, $cache)
+    public function compile($sources, $app)
     {
         return $sources;
     }

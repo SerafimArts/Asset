@@ -17,7 +17,7 @@ class SassPhpDriver extends AbstractDriver
 {
     protected static $compiler;
 
-    public function compile($sources, $cache)
+    public function compile($sources, $app)
     {
         if (!self::$compiler) {
             self::$compiler = new SassParser([

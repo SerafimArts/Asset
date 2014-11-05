@@ -9,16 +9,29 @@
  */ 
 namespace Serafim\Asset\Driver;
 
+use Intervention\Image\ImageManager;
 use SplFileInfo;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class PlainDriver extends AbstractDriver
+class ImageDriver extends AbstractDriver
 {
+    protected static $driver;
+
     public function compile($sources, $app)
     {
-        return $this->cache($app, function() use ($sources) {
-            return $sources;
+        if (!self::$driver) {
+            self::$driver = new ImageManager(['driver' => 'gd']);
+        }
+        return $this->cache($app, function() use($sources) {
+            return self::$driver
+                ->make($sources)
+                ->encode($this->file->getExtension(), 70);
         });
+    }
+
+    public function hasManifest()
+    {
+        return false;
     }
 
     public function getOutputExtension()

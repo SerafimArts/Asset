@@ -59,10 +59,10 @@ class File
         $extension = $file->getExtension();
         foreach ($configs['drivers'] as $class => $ext) {
             if (in_array($extension, $ext)) {
-                return new $class($file);
+                return new $class($this);
             }
         }
-        return new PlainDriver($file);
+        return new PlainDriver($this);
     }
 
     public function getOutputInterface()
@@ -80,7 +80,7 @@ class File
         if ($this->included) { return ''; }
 
         $source = file_get_contents($this->file->getRealPath());
-        $result = $this->driver->compile($source, $app['cache']);
+        $result = $this->driver->compile($source, $app);
 
         if ($this->driver->hasManifest()) {
             $parser = new Parser($this, $result, $app);
@@ -88,6 +88,15 @@ class File
         }
 
         return $result;
+    }
+
+    public function publish($sources)
+    {
+        if (!is_dir(dirname($this->getPublicPath()))) {
+            mkdir(dirname($this->getPublicPath()), 0777, true);
+        }
+        file_put_contents($this->getPublicPath(), $sources);
+        return $this;
     }
 
     public function getFileHeader($expr = null)

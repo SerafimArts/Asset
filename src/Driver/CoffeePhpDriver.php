@@ -15,9 +15,9 @@ use Serafim\Asset\Driver\AbstractDriver;
 
 class CoffeePhpDriver extends AbstractDriver
 {
-    public function compile($sources, $cache)
+    public function compile($sources, $app)
     {
-        return $this->cache($cache, function() use ($sources) {
+        return $this->cache($app, function() use ($sources) {
             return Compiler::compile($sources, [
                 'filename' => $this->file->getFilename(),
                 'header' => false

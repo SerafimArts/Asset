@@ -19,7 +19,7 @@ class PlainSerialize extends AbstractSerialize
         return $this->createTag('a', array_merge($args, [
             'href'  => $this->getFile()->getPublicUrl(),
             'target' => '_blank',
-        ]), '');
+        ]), $this->getFile()->getPublicUrl());
     }
 
     public function toInline($args = [])

@@ -9,6 +9,7 @@
  */ 
 namespace Serafim\Asset\Manifest;
 
+use Serafim\Asset\Events;
 use Serafim\Asset\Exception\ModifierException;
 use Symfony\Component\Finder\Finder;
 use SplFileInfo;
@@ -37,6 +38,7 @@ class Parser
             foreach ($finder as $f) {
                 $include     = new File($f, $file->getConfigs());
                 $expression  = trim($dataLine);
+                $app['events']->fire(Events::READ, $include);
                 $included   .=
                     $include->getFileHeader($expression) .
                     $include->compile($app) . "\n";
