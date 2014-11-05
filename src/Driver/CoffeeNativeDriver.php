@@ -9,60 +9,22 @@
  */
 namespace Serafim\Asset\Driver;
 
-use Serafim\Asset\Exception\NoPackageException;
-use Serafim\Asset\Serialize\JsSerialize;
-use Symfony\Component\Finder\SplFileInfo;
+use SplFileInfo;
 use CoffeeScript\Compiler as CSCompiler;
 
-/**
- * Class CoffeeNativeDriver
- * @package Serafim\Asset\Driver
- */
 class CoffeeNativeDriver
-    extends AbstractDriver
-    implements DriverInterface
 {
-    /**
-     * @var array
-     */
-    protected static $patterns = [
-        '#\s*=\s*require\s+{file}'
-    ];
-
-    /**
-     * @return bool|void
-     * @throws NoPackageException
-     */
-    public static function check()
+    public function compile(SplFileInfo $file)
     {
-        if (!class_exists('\\CoffeeScript\\Compiler')) {
-            throw new NoPackageException('Can not build CoffeeScript files. ' .
-                'Please install "coffeescript/coffeescript" package.');
-        }
-    }
-
-    /**
-     * @param SplFileInfo $file
-     * @return string
-     * @throws \CoffeeScript\Error
-     */
-    public function compile(SplFileInfo $file, $content = null)
-    {
-        $content = ($content === null)
-            ? $file->getContents()
-            : $content;
-        return CSCompiler::compile($content, [
-            'filename' => $file->getRelativePathname(),
+        $sources = file_get_contents($file->getRealPath());
+        return CSCompiler::compile($sources, [
+            'filename' => basename($file->getRealPath()),
             'header' => false
         ]);
     }
 
-    /**
-     * @param SplFileInfo $file
-     * @return JsSerialize|void
-     */
-    public static function getSerializationInterface(SplFileInfo $file)
+    public static function check()
     {
-        return new JsSerialize($file);
+        return true;
     }
 }

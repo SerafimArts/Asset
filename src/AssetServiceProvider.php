@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Serafim\Asset\Laravel;
+namespace Serafim\Asset;
 
 use Illuminate\Support\ServiceProvider;
 use Serafim\Asset\Commands\AssetGenerateCommand;
@@ -20,8 +20,8 @@ use Serafim\Asset\Compiler;
  */
 class AssetServiceProvider extends ServiceProvider
 {
-    const CONFIG_PATH   = '/../config/config.php';
-    const HELPERS_PATH  = '/../helpers.php';
+    const CONFIG_PATH   = '/config/config.php';
+    const HELPERS_PATH  = '/helpers.php';
 
     /**
      * @var bool

@@ -1,7 +1,7 @@
 {
     "name": "serafim/asset",
     "type": "library",
-    "description": "Asset Pipleine port for PHP.",
+    "description": "Asset Pipleine for Laravel 4.",
     "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minfy"],
     "homepage": "https://github.com/SerafimArts/Asset",
     "license": "MIT",
@@ -12,13 +12,14 @@
         "illuminate/support": "*",
         "illuminate/cache": "*",
         "illuminate/foundation": "*",
-        "illuminate/events": "*"
+        "illuminate/events": "*",
+
+        "coffeescript/coffeescript": "1.3.1",
+        "leafo/scssphp": "0.1.1",
+        "leafo/lessphp": "0.4.0",
+        "richthegeek/phpsass": "2014-03-20"
     },
     "suggest": {
-        "coffeescript/coffeescript": "Compatible CoffeeScript compiler",
-        "leafo/scssphp": "Compatible Scss compiler",
-        "leafo/lessphp": "Compatible Less compiler",
-        "richthegeek/phpsass": "Compatible Sass compiler",
         "cssmin/cssmin": "Compatible css minifier",
         "patchwork/jsqueeze": "Compatible js minifier"
     },

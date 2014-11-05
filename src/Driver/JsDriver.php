@@ -9,22 +9,13 @@
  */
 namespace Serafim\Asset\Driver;
 
+use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Serialize\JsSerialize;
-use Symfony\Component\Finder\SplFileInfo;
+use SplFileInfo;
 
-/**
- * Class JsDriver
- * @package Serafim\Asset\Driver
- */
-class JsDriver
-    extends AbstractDriver
-    implements DriverInterface
+class JsDriver extends AbstractDriver
 {
-    /**
-     * @param SplFileInfo $file
-     * @return mixed|JsSerialize|void
-     */
-    public static function getSerializationInterface(SplFileInfo $file)
+    public static function getSerializationInterface(File $file)
     {
         return new JsSerialize($file);
     }

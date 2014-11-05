@@ -9,7 +9,7 @@
  */
 namespace Serafim\Asset\Serialize;
 
-use Symfony\Component\Finder\SplFileInfo;
+use Serafim\Asset\Compiler\File;
 
 /**
  * Class AbstractSerialize
@@ -17,60 +17,28 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractSerialize
 {
-    /**
-     * @var SplFileInfo
-     */
+    protected $sources;
+    protected $url;
     protected $file;
 
     /**
-     * @var string
+     * @param File $file
      */
-    protected $content = '';
-
-    /**
-     * @var string
-     */
-    protected $url = '';
-
-    /**
-     * @var string
-     */
-    protected $extension = 'txt';
-
-    /**
-     * @param SplFileInfo $file
-     */
-    public function __construct(SplFileInfo $file)
+    public function __construct(File $file)
     {
         $this->file = $file;
+        $this->url  = $file->getAssetPath()->url;
+        $this->sources = $file->build();
     }
 
-    /**
-     * @param $content
-     * @return $this
-     */
-    public function setContent($content)
+    public function getSources()
     {
-        $this->content = $content;
-        return $this;
+        return $this->sources;
     }
 
-    /**
-     * @param $url
-     * @return $this
-     */
-    public function setUrl($url)
+    public function getUrl()
     {
-        $this->url = $url;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
+        return $this->url;
     }
 
     /**
@@ -85,21 +53,7 @@ abstract class AbstractSerialize
      */
     abstract public function toLink(array $options = []);
 
-    /**
-     * @return string
-     */
-    public function getSources()
-    {
-        return $this->content;
-    }
 
-    /**
-     * @return SplFileInfo
-     */
-    public function getFileInfo()
-    {
-        return $this->file;
-    }
 
     /**
      * @return mixed

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Serafim\Asset\Laravel;
+namespace Serafim\Asset;
 
 use Illuminate\Support\Facades\Facade;
 

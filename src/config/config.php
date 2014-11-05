@@ -18,6 +18,15 @@ return [
     // generate /path/file (original) or /path/{HASH}/{HASH}/file (advanced) paths
     'publish' => 'advanced',
 
+    'paths' => [
+        app_path('assets'),
+        app_path('assets/javascripts'),
+        app_path('assets/stylesheets'),
+        base_path('lib/assets'),
+        base_path('lib/assets/stylesheets'),
+        base_path('lib/assets/stylesheets'),
+    ],
+
     'path' => [
         // sources directory path
         'sources' => app_path('assets'),

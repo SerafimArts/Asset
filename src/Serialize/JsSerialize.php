@@ -29,7 +29,7 @@ class JsSerialize
      */
     public function getInline(array $options = [])
     {
-        return $this->createTag('script', $options, $this->content);
+        return $this->createTag('script', $options, $this->getSources());
     }
 
     /**
@@ -39,7 +39,7 @@ class JsSerialize
     public function toLink(array $options = [])
     {
         return $this->createTag('script', array_merge($options, [
-            'src'  => $this->url,
+            'src'  => $this->getUrl(),
             'type'  => 'text/javascript'
         ]), '');
     }

@@ -9,11 +9,9 @@
  */ 
 namespace Serafim\Asset;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
 use Serafim\Asset\Exception\FileNotFoundException;
-use Serafim\Asset\Manifest\Parser;
-use Symfony\Component\Finder\SplFileInfo;
+use Serafim\Asset\Compiler\File;
+use Serafim\Asset\Exception\DoublePathException;
 
 /**
  * Class Compiler
@@ -69,116 +67,42 @@ class Compiler
      */
     public function make($file, array $options = [])
     {
-        $path = $this->config['path']['sources'] . '/' . $file;
-        if (!file_exists($path)) {
-            throw new FileNotFoundException("File ${path} not found.");
+        $spl = $this->search($file, $this->config);
+        $file = new File($spl, $this->config);
+
+
+        if (!$this->config['cache'] || !$file->exists()) {
+            $sources = $file->build();
+            $path    = $file->getAssetPath();
+            if (!is_dir(dirname($path->target))) {
+                mkdir(dirname($path->target), 0777, true);
+            }
+            file_put_contents($path->target, $sources);
         }
 
-
-        $spl = new SplFileInfo($path, dirname($file), $file);
-        $driver = $this->getDriver($spl->getFilename());
-        $serialize = $driver::getSerializationInterface($spl);
-
-        $asset = $this->getAssetFilePath($spl, $serialize->getExtension());
-
-        if (file_exists($asset->target) && $this->config['cache']) {
-            $sources = file_get_contents($asset->target);
-        } else {
-            if (!$driver::parseManifest()) {
-                $sources = $this->build($spl, new $driver);
-            } else {
-                $manifest = new Parser(
-                    $this,
-                    new SplFileInfo($path, dirname($spl), $spl)
-                );
-                $sources = $manifest->parse($driver);
-            }
-
-            if (!is_dir(dirname($asset->target))) {
-                mkdir(dirname($asset->target), 0777, true);
-            }
-            file_put_contents($asset->target, $sources);
-            $this
-                ->app['events']
-                ->fire(self::EVENT_PUBLISH, $asset);
-        }
-
-        $serialize->setUrl($asset->url);
-        $serialize->setContent($sources);
-
-        return $serialize;
+        $driver = $file->getDriver();
+        return $driver::getSerializationInterface($file);
     }
 
-    /**
-     * @param SplFileInfo $file
-     * @param $extension
-     * @return object
-     */
-    protected function getAssetFilePath(SplFileInfo $file, $extension)
+    protected function search($file, $config)
     {
-        $md5 = md5($file->getContents());
-        $name = str_replace('.' . $file->getExtension(), '', $file->getFilename());
-
-        $path = ($this->config['publish'] == 'advanced')
-            ? substr($md5, 0, 2) . '/' .
-              substr($md5, 2, 2) . '/' .
-              substr($md5, 4, 16) . '-' .
-                $name . $extension
-            : $md5 . '-' . $name . $extension;
-
-        return (object)[
-            'url'       => $this->config['path']['url'] . '/' . $path,
-            'target'    => $this->config['path']['public'] . '/' . $path
-        ];
-    }
-
-
-    /**
-     * @param SplFileInfo $file
-     * @param $driver
-     * @return mixed
-     */
-    public function build(SplFileInfo $file, $driver, $content = null)
-    {
-        try {
-            $key = md5($file->getRelativePathname() . $file->getContents());
-        } catch (\Exception $e) {
-            throw new FileNotFoundException('Can not read content of "' . $file->getRelativePathname() . '" file.');
-        }
-
-        return $this
-            ->app['cache']
-            ->rememberForever(
-                $key,
-                function () use ($file, $driver, $content) {
-                    try {
-                        $this
-                            ->app['events']
-                            ->fire(Compiler::EVENT_COMPILE, $file);
-                        return $driver
-                            ->compile($file, $content);
-                    } catch (\Exception $e) {
-                        throw new \Exception('Internal compiler error: ' . $e->getMessage());
-                    }
+        $realpath = null;
+        foreach($config['paths'] as $path) {
+            $temp = $path . '/' . $file;
+            if (file_exists($temp)) {
+                if ($realpath) {
+                    throw new DoublePathException(
+                        "File found in ${temp} but file already exists in ${realpath}"
+                    );
                 }
-            );
-
-    }
-
-    /**
-     * @param $filename
-     * @return string
-     */
-    public function getDriver($filename)
-    {
-        $ext = (new \SplFileInfo($filename))->getExtension();
-        foreach ($this->config['drivers'] as $driver => $extensions) {
-            if (in_array($ext, $extensions)) {
-                $driver::check();
-                return $driver;
+                $realpath = $temp;
             }
         }
 
-        return '\\Serafim\\Asset\\Driver\\PlainDriver';
+        if (!$realpath) {
+            throw new FileNotFoundException("File ${file} not found.");
+        }
+
+        return new \SplFileInfo($realpath);
     }
 }
