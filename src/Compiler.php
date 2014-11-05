@@ -6,12 +6,14 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
+
 namespace Serafim\Asset;
 
-use Serafim\Asset\Exception\FileNotFoundException;
 use Serafim\Asset\Compiler\File;
+use Serafim\Asset\Exception\FileNotFoundException;
 use Serafim\Asset\Exception\DoublePathException;
+use SplFileInfo;
 
 /**
  * Class Compiler
@@ -31,64 +33,48 @@ class Compiler
     /**
      * @var
      */
-    protected $config;
+    protected $configs;
 
     /**
      * @param $app
-     * @param $config
+     * @param $configs
      */
-    public function __construct($app, $config)
+    public function __construct($app, $configs)
     {
         $this->app = $app;
-        $this->config = $config;
+        $this->configs = $configs;
     }
 
     /**
-     * @return mixed
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApplication()
-    {
-        return $this->app;
-    }
-
-    /**
-     * @param $file
+     * @param $path
      * @param array $options
      * @return array
      * @throws FileNotFoundException
      */
-    public function make($file, array $options = [])
+    public function make($path, array $options = [])
     {
-        $spl = $this->search($file, $this->config);
-        $file = new File($spl, $this->config);
+        $file = new File(
+            $this->search($path, $this->configs),
+            $this->configs
+        );
 
-
-        if (!$this->config['cache'] || !$file->exists()) {
-            $sources = $file->build();
-            $path    = $file->getAssetPath();
-            if (!is_dir(dirname($path->target))) {
-                mkdir(dirname($path->target), 0777, true);
+        if (!$this->configs['cache'] || !$file->exists()) {
+            $sources = $file->compile($this->app);
+            if (!is_dir(dirname($file->getPublicPath()))) {
+                mkdir(dirname($file->getPublicPath()), 0777, true);
             }
-            file_put_contents($path->target, $sources);
+            file_put_contents($file->getPublicPath(), $sources);
         }
 
-        $driver = $file->getDriver();
-        return $driver::getSerializationInterface($file);
+        return $file->getOutputInterface();
     }
 
-    protected function search($file, $config)
+
+    protected function search($fpath, $configs)
     {
         $realpath = null;
-        foreach($config['paths'] as $path) {
-            $temp = $path . '/' . $file;
+        foreach($configs['paths'] as $path) {
+            $temp = $path . '/' . $fpath;
             if (file_exists($temp)) {
                 if ($realpath) {
                     throw new DoublePathException(
@@ -100,9 +86,9 @@ class Compiler
         }
 
         if (!$realpath) {
-            throw new FileNotFoundException("File ${file} not found.");
+            throw new FileNotFoundException("File ${fpath} not found.");
         }
 
-        return new \SplFileInfo($realpath);
+        return new SplFileInfo($realpath);
     }
 }

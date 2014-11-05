@@ -12,7 +12,7 @@ namespace Serafim\Asset\Driver;
 use SplFileInfo;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class JsDriver extends AbstractDriver
+class CssDriver extends AbstractDriver
 {
     public function compile($sources, $cache)
     {
@@ -23,6 +23,6 @@ class JsDriver extends AbstractDriver
 
     public function getOutputExtension()
     {
-        return 'js';
+        return 'css';
     }
 }

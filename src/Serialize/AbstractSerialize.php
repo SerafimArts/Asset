@@ -1,68 +1,49 @@
 <?php
 /**
- * This file is part of Asset package.
+ * This file is part of Assets package.
  *
- * Serafim <nesk@xakep.ru> (15.10.2014 23:11)
+ * Serafim <nesk@xakep.ru> (05.11.2014 15:27)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */
+ */ 
 namespace Serafim\Asset\Serialize;
 
 use Serafim\Asset\Compiler\File;
 
-/**
- * Class AbstractSerialize
- * @package Serafim\Asset\Serialize
- */
 abstract class AbstractSerialize
 {
-    protected $sources;
-    protected $url;
     protected $file;
 
-    /**
-     * @param File $file
-     */
     public function __construct(File $file)
     {
         $this->file = $file;
-        $this->url  = $file->getAssetPath()->url;
-        $this->sources = $file->build();
     }
 
+    abstract public function toLink($args = []);
+
+    abstract public function toInline($args = []);
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return string
+     */
     public function getSources()
     {
-        return $this->sources;
-    }
-
-    public function getUrl()
-    {
-        return $this->url;
+        return file_get_contents($this->file->getPublicPath());
     }
 
     /**
-     * @param array $options
-     * @return mixed
-     */
-    abstract public function getInline(array $options = []);
-
-    /**
-     * @param array $options
-     * @return mixed
-     */
-    abstract public function toLink(array $options = []);
-
-
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function __toString()
     {
-        return $this->toLink();
+        return (string)$this->toLink();
     }
-
     /**
      * @param $name
      * @param array $options
@@ -72,12 +53,11 @@ abstract class AbstractSerialize
     protected function createTag($name, array $options = [], $content = null)
     {
         if ($content === null) {
-            return '<' . $name . ' ' . $this->parseArgs($options) . ' />';
+            return '<' . $name . $this->parseArgs($options) . ' />';
         }
-        return '<' . $name . ' ' . $this->parseArgs($options) . '>' .
-            $content . '</' . $name . '>';
+        return '<' . $name . $this->parseArgs($options) . '>' .
+        $content . '</' . $name . '>';
     }
-
     /**
      * @param $args
      * @return string
@@ -88,6 +68,10 @@ abstract class AbstractSerialize
         foreach ($args as $attr => $val) {
             $result[] = $attr . '="' . $val . '"';
         }
-        return implode(' ', $result);
+        return (
+            count($result)
+                ? ' ' . implode(' ', $result)
+                : ''
+        );
     }
 }

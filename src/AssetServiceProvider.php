@@ -11,7 +11,6 @@
 namespace Serafim\Asset;
 
 use Illuminate\Support\ServiceProvider;
-use Serafim\Asset\Commands\AssetGenerateCommand;
 use Serafim\Asset\Compiler;
 
 /**
@@ -45,7 +44,7 @@ class AssetServiceProvider extends ServiceProvider
 
         $this->app['asset'] = $this->app->share(function ($app) {
             $compiler = new Compiler($app, $this->getConfigs($app));
-            $app['events']->fire(Compiler::EVENT_BOOT, $compiler);
+            #$app['events']->fire(Compiler::EVENT_BOOT, $compiler);
 
             return $compiler;
         });

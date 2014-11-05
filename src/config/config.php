@@ -9,58 +9,41 @@
  */
 
 return [
-    // requie only unique files
-    'unique' => true,
+    'cache'     => (bool)App::environment('production'),
 
-    // do not check file updates if file already exists
-    'cache'  => (bool)App::environment('production'),
+    'publish'   => 'advanced',
 
-    // generate /path/file (original) or /path/{HASH}/{HASH}/file (advanced) paths
-    'publish' => 'advanced',
-
-    'paths' => [
+    'paths'     => [
         app_path('assets'),
         app_path('assets/javascripts'),
         app_path('assets/stylesheets'),
         base_path('lib/assets'),
-        base_path('lib/assets/stylesheets'),
+        base_path('lib/assets/javascripts'),
         base_path('lib/assets/stylesheets'),
     ],
 
-    'path' => [
-        // sources directory path
-        'sources' => app_path('assets'),
+    'public' => public_path('assets'),
 
-        // public directory path
-        'public'  => public_path('assets'),
+    'url' => URL::to('/assets'),
 
-        // assets url
-        'url'     => '/assets',
+    'drivers' => [
+        'Serafim\\Asset\\Driver\\CoffeePhpDriver'   => ['coffee'],
+        'Serafim\\Asset\\Driver\\JsDriver'          => ['js'],
+
+        'Serafim\\Asset\\Driver\\ScssPhpDriver'     => ['scss'],
+        'Serafim\\Asset\\Driver\\SassPhpDriver'     => ['sass'],
+        'Serafim\\Asset\\Driver\\LessPhpDriver'     => ['less'],
+        'Serafim\\Asset\\Driver\\CssPhpDriver'      => ['css'],
+    ],
+
+    'output' => [
+        'js'    => 'Serafim\\Asset\\Serialize\\JsSerialize',
+        'css'   => 'Serafim\\Asset\\Serialize\\CssSerialize',
     ],
 
     'minify' => [
-        // enable minification
         'enable'      => (bool)App::environment('production'),
-
-        // javascript minify driver
         'javascripts' => 'Serafim\\Asset\\Minify\\JsNativeMinify',
-
-        // stylesheet minify driver
         'stylesheets' => 'Serafim\\Asset\\Minify\\CssNativeMinify',
     ],
-
-    // drivers for file extensions (DriverName => [extension-1, extension-2])
-    'drivers' => [
-        'Serafim\\Asset\\Driver\\CoffeeNativeDriver' => ['coffee'],
-
-        'Serafim\\Asset\\Driver\\LessNativeDriver' => ['less'],
-
-        'Serafim\\Asset\\Driver\\ScssNativeDriver' => ['scss'],
-
-        'Serafim\\Asset\\Driver\\SassNativeDriver' => ['sass'],
-
-        'Serafim\\Asset\\Driver\\CssDriver' => ['css'],
-
-        'Serafim\\Asset\\Driver\\JsDriver' => ['js'],
-    ]
 ];

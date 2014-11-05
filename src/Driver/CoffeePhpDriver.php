@@ -9,15 +9,19 @@
  */ 
 namespace Serafim\Asset\Driver;
 
+use CoffeeScript\Compiler;
 use SplFileInfo;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class JsDriver extends AbstractDriver
+class CoffeePhpDriver extends AbstractDriver
 {
     public function compile($sources, $cache)
     {
         return $this->cache($cache, function() use ($sources) {
-            return $sources;
+            return Compiler::compile($sources, [
+                'filename' => $this->file->getFilename(),
+                'header' => false
+            ]);
         });
     }
 

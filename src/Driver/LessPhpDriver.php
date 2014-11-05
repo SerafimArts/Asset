@@ -10,19 +10,26 @@
 namespace Serafim\Asset\Driver;
 
 use SplFileInfo;
+use lessc as LessCompiler;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class JsDriver extends AbstractDriver
+class LessPhpDriver extends AbstractDriver
 {
+    protected static $compiler;
+
     public function compile($sources, $cache)
     {
-        return $this->cache($cache, function() use ($sources) {
-            return $sources;
-        });
+        if (!self::$compiler) {
+            self::$compiler = new LessCompiler;
+            self::$compiler
+                ->addImportDir(dirname($this->file->getRealPath()));
+        }
+        // disable cache (less has imports)
+        return self::$compiler->compile($sources, $this->file->getFilename());
     }
 
     public function getOutputExtension()
     {
-        return 'js';
+        return 'css';
     }
 }

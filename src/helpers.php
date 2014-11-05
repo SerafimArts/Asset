@@ -7,6 +7,6 @@ if (!function_exists('asset_link')) {
 
 if (!function_exists('asset_source')) {
     function asset_source($file, array $options = []) {
-        return App::make('asset')->make($file)->getInline($options);
+        return App::make('asset')->make($file)->toInline($options);
     }
 }

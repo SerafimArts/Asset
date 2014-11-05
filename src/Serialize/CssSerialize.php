@@ -12,18 +12,19 @@ namespace Serafim\Asset\Serialize;
 use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Serialize\AbstractSerialize;
 
-class JsSerialize extends AbstractSerialize
+class CssSerialize extends AbstractSerialize
 {
     public function toLink($args = [])
     {
-        return $this->createTag('script', array_merge($args, [
-            'src'  => $this->getFile()->getPublicUrl(),
-            'type'  => 'text/javascript'
-        ]), '');
+        return $this->createTag('link', array_merge($args, [
+            'href' => $this->getFile()->getPublicUrl(),
+            'rel' => 'stylesheet',
+            'type' => 'text/css'
+        ]));
     }
 
     public function toInline($args = [])
     {
-        return $this->createTag('script', $args, $this->getSources());
+        return $this->createTag('style', $args, $this->getSources());
     }
 }

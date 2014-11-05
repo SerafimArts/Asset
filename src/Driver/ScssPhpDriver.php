@@ -10,19 +10,26 @@
 namespace Serafim\Asset\Driver;
 
 use SplFileInfo;
+use Leafo\ScssPhp\Compiler;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class JsDriver extends AbstractDriver
+class ScssPhpDriver extends AbstractDriver
 {
+    protected static $compiler;
+
     public function compile($sources, $cache)
     {
-        return $this->cache($cache, function() use ($sources) {
-            return $sources;
-        });
+        if (!self::$compiler) {
+            self::$compiler = new Compiler();
+            self::$compiler
+                ->addImportPath(dirname($this->file->getRealPath()));
+        }
+        // disable cache (scss has imports)
+        return self::$compiler->compile($sources, $this->file->getFilename());
     }
 
     public function getOutputExtension()
     {
-        return 'js';
+        return 'css';
     }
 }
