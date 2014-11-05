@@ -25,7 +25,6 @@ abstract class AbstractDriver
     {
         $hash = 'assets@' . md5_file($this->file->getRealPath());
         return $driver->rememberForever($hash, function() use ($make) {
-            echo 'сборка ' . $this->file->getRealPath() . '<br />';
             return $make();
         });
     }

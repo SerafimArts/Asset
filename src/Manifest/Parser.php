@@ -37,7 +37,6 @@ class Parser
             foreach ($finder as $f) {
                 $include     = new File($f, $file->getConfigs());
                 $expression  = trim($dataLine);
-                echo 'включение ' . $f->getRealpath() . '<br />';
                 $included   .=
                     $include->getFileHeader($expression) .
                     $include->compile($app) . "\n";
