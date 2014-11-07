@@ -43,8 +43,6 @@ class AssetServiceProvider extends ServiceProvider
 
         $this->app['asset'] = $this->app->share(function ($app) {
             $configs = $app->config->get('asset::config');
-
-            dd($configs);
             $compiler = new Compiler($app, $configs);
             $app['events']->fire(Events::BOOT, $compiler);
 
