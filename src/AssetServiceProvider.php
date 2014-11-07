@@ -19,7 +19,6 @@ use Serafim\Asset\Compiler;
  */
 class AssetServiceProvider extends ServiceProvider
 {
-    const CONFIG_PATH   = '/config/config.php';
     const HELPERS_PATH  = '/helpers.php';
 
     /**
@@ -44,6 +43,8 @@ class AssetServiceProvider extends ServiceProvider
 
         $this->app['asset'] = $this->app->share(function ($app) {
             $configs = $app->config->get('asset::config');
+
+            dd($configs);
             $compiler = new Compiler($app, $configs);
             $app['events']->fire(Events::BOOT, $compiler);
 
