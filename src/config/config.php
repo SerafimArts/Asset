@@ -35,7 +35,7 @@ return [
         'Serafim\\Asset\\Driver\\ScssPhpDriver'     => ['scss'],
         'Serafim\\Asset\\Driver\\SassPhpDriver'     => ['sass'],
         'Serafim\\Asset\\Driver\\LessPhpDriver'     => ['less'],
-        'Serafim\\Asset\\Driver\\CssPhpDriver'      => ['css'],
+        'Serafim\\Asset\\Driver\\CssDriver'         => ['css'],
 
         'Serafim\\Asset\\Driver\\ImageDriver'      => ['jpg', 'png', 'gif'],
     ],
