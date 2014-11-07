@@ -32,7 +32,7 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('serafim/asset', 'asset', __DIR__ . '/..');
+        $this->package('serafim/asset', 'asset', __DIR__);
     }
 
     /**
@@ -43,31 +43,13 @@ class AssetServiceProvider extends ServiceProvider
         require_once __DIR__ . self::HELPERS_PATH;
 
         $this->app['asset'] = $this->app->share(function ($app) {
-            $compiler = new Compiler($app, $this->getConfigs($app));
+            $configs = $app->config->get('asset::config');
+            $compiler = new Compiler($app, $configs);
             $app['events']->fire(Events::BOOT, $compiler);
 
             return $compiler;
         });
     }
-
-    /**
-     * @param $app
-     * @return array
-     */
-    public function getConfigs($app)
-    {
-        $config = $app->config->get('asset::config');
-        return array_merge($this->getDefaultConfigs(), $config);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDefaultConfigs()
-    {
-        return require __DIR__ . self::CONFIG_PATH;
-    }
-
     /**
      * @return array
      */
