@@ -12,7 +12,7 @@ namespace Serafim\Asset\Driver;
 use SplFileInfo;
 use Leafo\ScssPhp\Compiler;
 use Serafim\Asset\Driver\AbstractDriver;
-use scss_compass as Compass;
+use Serafim\ScssPhp\Compass;
 
 class ScssCompassPhpDriver extends AbstractDriver
 {
@@ -22,12 +22,19 @@ class ScssCompassPhpDriver extends AbstractDriver
     {
         if (!self::$compiler) {
             self::$compiler = new Compiler();
-            $compass = new Compass(self::$compiler);
+            $this->withCompass(self::$compiler);
             self::$compiler
                 ->addImportPath(dirname($this->file->getRealPath()));
         }
         // disable cache (scss has imports)
         return self::$compiler->compile($sources, $this->file->getFilename());
+    }
+
+    protected function withCompass($compiler)
+    {
+        $compass = new Compass($compiler);
+        $compass->register();
+        return $compass;
     }
 
     public function getOutputExtension()

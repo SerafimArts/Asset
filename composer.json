@@ -16,6 +16,7 @@
 
         "coffeescript/coffeescript": "1.3.1",
         "leafo/scssphp": "0.1.1",
+        "serafim/scssphp-compass": "dev-master@dev",
         "leafo/lessphp": "0.4.0",
         "richthegeek/phpsass": "2014-03-20"
     },
