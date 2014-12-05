@@ -7,8 +7,6 @@ Asset
 - [Russian Readme](https://github.com/SerafimArts/Asset/wiki/%5BRU%5D-README)
 
 
-
-
 #### Trusted by
 
 - [RuDev](https://github.com/Developers-RuDev)

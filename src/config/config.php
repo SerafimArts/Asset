@@ -11,6 +11,8 @@
 return [
     'cache'     => (bool)App::environment('production'),
 
+    'gzip'      => (bool)App::environment('production') ? 5 : -1, // gzip level (-1 == do not build zip files)
+
     'publish'   => 'advanced',
 
     'paths'     => [

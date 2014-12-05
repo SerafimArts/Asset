@@ -33,10 +33,10 @@ class File
             $this->included = true;
         }
 
-        $this->file = $file;
-        $this->configs = $configs;
-        $this->driver = $this->makeDriver($file, $configs);
-        $this->public = $this->makePublicName($file, $configs, $this->driver);
+        $this->file     = $file;
+        $this->configs  = $configs;
+        $this->driver   = $this->makeDriver($file, $configs);
+        $this->public   = $this->makePublicName($file, $configs, $this->driver);
     }
 
     protected function makePublicName(SplFileInfo $file, $configs, $driver)
@@ -75,6 +75,28 @@ class File
         return new PlainSerialize($this);
     }
 
+    public function getIncludedFiles()
+    {
+        return self::$includedFiles;
+    }
+
+    public function getIncludedFileNames()
+    {
+        $result = [];
+        $files  = self::$includedFiles;
+        foreach ($files as $file) {
+            $result[] = basename($file);
+        }
+        return $result;
+    }
+
+    protected function clearCompiledFiles()
+    {
+        self::$includedFiles = [];
+        return $this;
+    }
+
+
     public function compile($app)
     {
         if ($this->included) { return ''; }
@@ -87,16 +109,14 @@ class File
             $result = $parser->getSources();
         }
 
+        $this->clearCompiledFiles();
+
         return $result;
     }
 
-    public function publish($sources)
+    public function getDriver()
     {
-        if (!is_dir(dirname($this->getPublicPath()))) {
-            mkdir(dirname($this->getPublicPath()), 0777, true);
-        }
-        file_put_contents($this->getPublicPath(), $sources);
-        return $this;
+        return $this->driver;
     }
 
     public function getFileHeader($expr = null)

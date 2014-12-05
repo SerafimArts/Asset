@@ -11,6 +11,7 @@
 namespace Serafim\Asset;
 
 use Serafim\Asset\Compiler\File;
+use Serafim\Asset\Compiler\Publisher;
 use Serafim\Asset\Exception\FileNotFoundException;
 use Serafim\Asset\Exception\DoublePathException;
 use SplFileInfo;
@@ -55,7 +56,9 @@ class Compiler
         );
 
         if (!$this->configs['cache'] || !$file->exists()) {
-            $file->publish($file->compile($this->app));
+            $publisher = new Publisher($file, $this->configs, $this->app);
+            $publisher->publish();
+
             $this->app['events']->fire(Events::PUBLISH, $file);
         }
 
