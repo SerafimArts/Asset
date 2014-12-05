@@ -35,7 +35,7 @@ return [
         'Serafim\\Asset\\Driver\\JsDriver'          => ['js'],
 
         'Serafim\\Asset\\Driver\\ScssPhpDriver'     => ['scss'],
-        // With Compass framework "serafim/scssphp-compass": "dev-master@dev"}
+        // Enable compass framework
         // 'Serafim\\Asset\\Driver\\ScssCompassPhpDriver' => ['scss'],
         'Serafim\\Asset\\Driver\\SassPhpDriver'     => ['sass'],
         'Serafim\\Asset\\Driver\\LessPhpDriver'     => ['less'],
