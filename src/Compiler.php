@@ -50,6 +50,7 @@ class Compiler
      */
     public function make($path, array $options = [])
     {
+        File::clearCompiledFiles();
         $file = new File(
             $this->search($path, $this->configs),
             $this->configs
