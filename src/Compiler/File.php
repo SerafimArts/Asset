@@ -109,8 +109,6 @@ class File
             $result = $parser->getSources();
         }
 
-        $this->clearCompiledFiles();
-
         return $result;
     }
 
