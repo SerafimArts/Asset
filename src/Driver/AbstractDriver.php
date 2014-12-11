@@ -11,6 +11,7 @@ namespace Serafim\Asset\Driver;
 
 use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Events;
+use Carbon\Carbon;
 
 abstract class AbstractDriver
 {
@@ -26,8 +27,9 @@ abstract class AbstractDriver
 
     protected function cache($app, callable $make)
     {
-        $hash = 'assets@' . md5_file($this->file->getRealPath());
-        return $app['cache']->rememberForever($hash, function() use ($make, $app) {
+        $hash       = 'assets@' . md5_file($this->file->getRealPath());
+        $timeout    = 10;
+        return $app['cache']->remember($hash, $timeout, function() use ($make, $app) {
             $app['events']->fire(Events::COMPILE, $this->container);
             return $make();
         });
