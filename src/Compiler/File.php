@@ -90,10 +90,9 @@ class File
         return $result;
     }
 
-    protected function clearCompiledFiles()
+    public static function clearCompiledFiles()
     {
         self::$includedFiles = [];
-        return $this;
     }
 
 
