@@ -28,8 +28,8 @@ abstract class AbstractDriver
     protected function cache($app, callable $make)
     {
         $hash       = 'assets@' . md5_file($this->file->getRealPath());
-        $timeout    = 10;
-        return $app['cache']->remember($hash, $timeout, function() use ($make, $app) {
+        #$timeout    = 10;
+        return $app['cache']->rememberForever($hash, function() use ($make, $app) {
             $app['events']->fire(Events::COMPILE, $this->container);
             return $make();
         });
