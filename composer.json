@@ -8,12 +8,6 @@
     "version": "1.0.0",
     "require": {
         "php": ">=5.4.0",
-        "symfony/finder": "2.*",
-        "illuminate/support": "*",
-        "illuminate/cache": "*",
-        "illuminate/foundation": "*",
-        "illuminate/events": "*",
-
         "coffeescript/coffeescript": "1.3.1",
         "leafo/scssphp": "0.1.1",
         "serafim/scssphp-compass": "*",
