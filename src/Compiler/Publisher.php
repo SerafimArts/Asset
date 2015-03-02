@@ -11,7 +11,7 @@ namespace Serafim\Asset\Compiler;
 
 
 use Serafim\Asset\Compiler\GZip;
-use Serafim\Asset\Compiler\SourceMaps;
+use Serafim\Asset\Compiler\SourceMaps\SourceMap;
 
 /**
  * Class Publisher
@@ -30,6 +30,7 @@ class Publisher
         $this->file = $file;
         $this->configs = $configs;
         $this->sources = $this->file->compile($this->app);
+        $this->sources = $this->file->minify($this->sources);
 
         /**
          * Create file.map
@@ -54,7 +55,6 @@ class Publisher
 
         $this->publishFile($path, $map->toJson());
     }
-
 
     public function publish()
     {

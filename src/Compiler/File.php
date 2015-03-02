@@ -39,6 +39,20 @@ class File
         $this->public   = $this->makePublicName($file, $configs, $this->driver);
     }
 
+    public function minify($code)
+    {
+        $ext = $this->driver->getOutputExtension();
+
+        if ($this->configs['minify']['enable'] &&
+            in_array($ext, array_keys($this->configs['minify']))) {
+
+            $class = $this->configs['minify'][$ext];
+            $instance = new $class;
+            return $instance->minify($code);
+        }
+        return $code;
+    }
+
     protected function makePublicName(SplFileInfo $file, $configs, $driver)
     {
         $md5  = md5($file->getRealPath());

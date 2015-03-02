@@ -54,8 +54,8 @@ return [
     ],
 
     'minify' => [
-        'enable'      => (bool)App::environment('production'),
-        'javascripts' => 'Serafim\\Asset\\Minify\\JsNativeMinify',
-        'stylesheets' => 'Serafim\\Asset\\Minify\\CssNativeMinify',
+        'enable' => (bool)App::environment('production'),
+        'js'     => 'Serafim\\Asset\\Minify\\JsNativeMinify',
+        'css'    => 'Serafim\\Asset\\Minify\\CssNativeMinify',
     ],
 ];

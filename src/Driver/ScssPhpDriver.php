@@ -13,7 +13,7 @@ use SplFileInfo;
 use Leafo\ScssPhp\Compiler;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class ScssPhpDriver extends AbstractDriver
+class ScssPhpDriver extends CssDriver
 {
     protected static $compiler;
 

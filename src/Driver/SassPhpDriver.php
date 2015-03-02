@@ -13,7 +13,7 @@ use SplFileInfo;
 use SassParser;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class SassPhpDriver extends AbstractDriver
+class SassPhpDriver extends CssDriver
 {
     protected static $compiler;
 

@@ -13,7 +13,7 @@ use CoffeeScript\Compiler;
 use SplFileInfo;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class CoffeePhpDriver extends AbstractDriver
+class CoffeePhpDriver extends JsDriver
 {
     public function compile($sources, $app)
     {

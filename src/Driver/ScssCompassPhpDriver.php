@@ -14,7 +14,7 @@ use Leafo\ScssPhp\Compiler;
 use Serafim\Asset\Driver\AbstractDriver;
 use Serafim\ScssPhp\Compass;
 
-class ScssCompassPhpDriver extends AbstractDriver
+class ScssCompassPhpDriver extends CssDriver
 {
     protected static $compiler;
 

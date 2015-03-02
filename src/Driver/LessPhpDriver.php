@@ -13,7 +13,7 @@ use SplFileInfo;
 use lessc as LessCompiler;
 use Serafim\Asset\Driver\AbstractDriver;
 
-class LessPhpDriver extends AbstractDriver
+class LessPhpDriver extends CssDriver
 {
     protected static $compiler;
 
