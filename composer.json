@@ -2,7 +2,7 @@
     "name": "serafim/asset",
     "type": "library",
     "description": "Asset Pipleine for Laravel 4.",
-    "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minfy"],
+    "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minify"],
     "homepage": "https://github.com/SerafimArts/Asset",
     "license": "MIT",
     "version": "1.0.0",
