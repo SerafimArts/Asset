@@ -1,7 +1,7 @@
 <?php
 namespace Serafim\Asset\Minify;
 
-use JSMinPlus;
+use Serafim\Asset\Compiler\Minify\JSMinPlus;
 
 class JsNativeMinify implements MinifyInterface
 {
