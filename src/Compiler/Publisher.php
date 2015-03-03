@@ -100,30 +100,9 @@ class Publisher
         }
 
         $compiler = $this->app['asset'];
-        $compiler::attach($this->file);
+        $compiler::addCompiledFile($this->file);
 
         return $file;
-    }
-
-    /**
-     * @param $files
-     */
-    public function withManifest(array $files = [])
-    {
-        $path   = $this->configs['public'] . Compiler::MANIFEST_NAME;
-        $url    = $this->configs['url']    . Compiler::MANIFEST_NAME;
-
-        $result = 'CACHE MANIFEST' . "\n";
-        foreach ($files as $file) {
-            $result .= $file->getPublicUrl() . "\n";
-        }
-
-        $current = file_exists($path) ? file_get_contents($path) : '';
-
-        if ($result != $current) {
-            file_put_contents($path, $result);
-        }
-        return $this;
     }
 
     /**

@@ -12,6 +12,7 @@ namespace Serafim\Asset;
 
 use Illuminate\Support\ServiceProvider;
 use Serafim\Asset\Compiler;
+use Serafim\Asset\Compiler\CacheManifest;
 
 /**
  * Class AssetServiceProvider
@@ -42,9 +43,11 @@ class AssetServiceProvider extends ServiceProvider
     {
         require_once __DIR__ . self::HELPERS_PATH;
 
-        $this->app['asset'] = $this->app->share(function ($app) {
-            $configs = $app->config->get('asset::config');
-            $compiler = new Compiler($app, $configs);
+
+        $this->app['asset'] = $this->app->share(function ($app)  {
+            $configs  = $this->app->config->get('asset::config');
+            $compiler = new Compiler($this->app, $configs);
+
             $app['events']->fire(Events::BOOT, $compiler);
 
             return $compiler;

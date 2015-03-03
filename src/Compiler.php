@@ -10,6 +10,7 @@
 
 namespace Serafim\Asset;
 
+use Serafim\Asset\Compiler\CacheManifest;
 use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Compiler\Publisher;
 use Serafim\Asset\Exception\DoublePathException;
@@ -22,8 +23,6 @@ use SplFileInfo;
  */
 class Compiler
 {
-    const MANIFEST_NAME = '/manifest.appcache';
-
     /**
      * @var
      */
@@ -59,6 +58,7 @@ class Compiler
     public function make($path, array $options = [])
     {
         File::clearCompiledFiles();
+
         $file = new File(
             $this->search($path, $this->configs),
             $this->configs
@@ -66,7 +66,7 @@ class Compiler
 
         if (!$this->configs['cache'] || !$file->exists()) {
             $publisher = new Publisher($file, $this->configs, $this->app);
-            $publisher->publish()->withManifest(self::$output);
+            $publisher->publish();
 
             $this->app['events']->fire(Events::PUBLISH, $file);
         }
@@ -77,9 +77,17 @@ class Compiler
     /**
      * @param $file
      */
-    public static function attach($file)
+    public static function addCompiledFile($file)
     {
         self::$output[] = $file;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getCompiledFiles()
+    {
+        return self::$output;
     }
 
     /**
@@ -87,13 +95,12 @@ class Compiler
      */
     public function manifest()
     {
-        $file = static::MANIFEST_NAME;
-        if (!file_exists($this->configs['public'] . $file)) {
-            return '';
-        }
+        $this->app->after(function() {
+            $manifest = new CacheManifest(Compiler::getCompiledFiles(), $this->configs);
+            $manifest->build();
+        });
 
-        $file .= '?v=' . filemtime($this->configs['public'] . $file);
-        return $this->configs['url'] . $file;
+        return CacheManifest::getOutputUrl($this->configs);
     }
 
     /**
