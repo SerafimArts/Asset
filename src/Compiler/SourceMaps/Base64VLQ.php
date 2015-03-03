@@ -21,20 +21,77 @@ class Base64VLQ
      *
      * @var array
      */
-    protected $int2char  = [
-        0 => 'A',  1 => 'B',  2 => 'C',  3 => 'D',  4 => 'E',  5 => 'F',
-        6 => 'G',  7 => 'H',  8 => 'I',  9 => 'J',  10 => 'K', 11 => 'L',
-        12 => 'M', 13 => 'N', 14 => 'O', 15 => 'P', 16 => 'Q', 17 => 'R',
-        18 => 'S', 19 => 'T', 20 => 'U', 21 => 'V', 22 => 'W', 23 => 'X',
-        24 => 'Y', 25 => 'Z', 26 => 'a', 27 => 'b', 28 => 'c', 29 => 'd',
-        30 => 'e', 31 => 'f', 32 => 'g', 33 => 'h', 34 => 'i', 35 => 'j',
-        36 => 'k', 37 => 'l', 38 => 'm', 39 => 'n', 40 => 'o', 41 => 'p',
-        42 => 'q', 43 => 'r', 44 => 's', 45 => 't', 46 => 'u', 47 => 'v',
-        48 => 'w', 49 => 'x', 50 => 'y', 51 => 'z', 52 => '0', 53 => '1',
-        54 => '2', 55 => '3', 56 => '4', 57 => '5', 58 => '6', 59 => '7',
-        60 => '8', 61 => '9', 62 => '+', 63 => '/'
+    protected $int2char = [
+        0  => 'A',
+        1  => 'B',
+        2  => 'C',
+        3  => 'D',
+        4  => 'E',
+        5  => 'F',
+        6  => 'G',
+        7  => 'H',
+        8  => 'I',
+        9  => 'J',
+        10 => 'K',
+        11 => 'L',
+        12 => 'M',
+        13 => 'N',
+        14 => 'O',
+        15 => 'P',
+        16 => 'Q',
+        17 => 'R',
+        18 => 'S',
+        19 => 'T',
+        20 => 'U',
+        21 => 'V',
+        22 => 'W',
+        23 => 'X',
+        24 => 'Y',
+        25 => 'Z',
+        26 => 'a',
+        27 => 'b',
+        28 => 'c',
+        29 => 'd',
+        30 => 'e',
+        31 => 'f',
+        32 => 'g',
+        33 => 'h',
+        34 => 'i',
+        35 => 'j',
+        36 => 'k',
+        37 => 'l',
+        38 => 'm',
+        39 => 'n',
+        40 => 'o',
+        41 => 'p',
+        42 => 'q',
+        43 => 'r',
+        44 => 's',
+        45 => 't',
+        46 => 'u',
+        47 => 'v',
+        48 => 'w',
+        49 => 'x',
+        50 => 'y',
+        51 => 'z',
+        52 => '0',
+        53 => '1',
+        54 => '2',
+        55 => '3',
+        56 => '4',
+        57 => '5',
+        58 => '6',
+        59 => '7',
+        60 => '8',
+        61 => '9',
+        62 => '+',
+        63 => '/'
     ];
-    protected $char2int  = [];
+
+    /**
+     * @var array
+     */
+    protected $char2int = [];
 
     /**
      * @var int
@@ -77,10 +134,10 @@ class Base64VLQ
     public function toVLQSigned($aValue)
     {
         return 0xffffffff &
-            ($aValue < 0
-                ? ((-$aValue) << 1) + 1
-                : ($aValue << 1) + 0
-            );
+        ($aValue < 0
+            ? ((-$aValue) << 1) + 1
+            : ($aValue << 1) + 0
+        );
     }
 
     /**
@@ -116,8 +173,8 @@ class Base64VLQ
         $vlq = $this->toVLQSigned($aValue);
 
         do {
-            $digit  = $vlq & $this->mask;
-            $vlq    = $this->zeroFill($vlq, $this->shift);
+            $digit = $vlq & $this->mask;
+            $vlq = $this->zeroFill($vlq, $this->shift);
             if ($vlq > 0) {
                 $digit |= $this->continuationBit;
             }
@@ -140,12 +197,13 @@ class Base64VLQ
 
         $i = 0;
         do {
-            $digit  = $this->base64Decode($encoded[$i]);
-            $vlq   |= ($digit & $this->mask) << ($i * $this->shift);
+            $digit = $this->base64Decode($encoded[$i]);
+            $vlq |= ($digit & $this->mask) << ($i * $this->shift);
             $i++;
         } while ($digit & $this->continuationBit);
 
         $encoded = substr($encoded, $i);
+
         return $this->fromVLQSigned($vlq);
     }
 
@@ -174,6 +232,7 @@ class Base64VLQ
         if ($number < 0 || $number > 63) {
             throw new Exception('Must be between 0 and 63: ' . $number);
         }
+
         return $this->int2char[$number];
     }
 
@@ -188,6 +247,7 @@ class Base64VLQ
         if (!array_key_exists($char, $this->char2int)) {
             throw new Exception('Not a valid base 64 digit: ' . $char);
         }
+
         return $this->char2int[$char];
     }
 }

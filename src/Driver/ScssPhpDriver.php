@@ -6,17 +6,27 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Driver;
 
-use SplFileInfo;
 use Leafo\ScssPhp\Compiler;
-use Serafim\Asset\Driver\AbstractDriver;
 
+/**
+ * Class ScssPhpDriver
+ * @package Serafim\Asset\Driver
+ */
 class ScssPhpDriver extends CssDriver
 {
+    /**
+     * @var
+     */
     protected static $compiler;
 
+    /**
+     * @param $sources
+     * @param $app
+     * @return mixed|string
+     */
     public function compile($sources, $app)
     {
         if (!self::$compiler) {
@@ -24,10 +34,14 @@ class ScssPhpDriver extends CssDriver
             self::$compiler
                 ->addImportPath(dirname($this->file->getRealPath()));
         }
+
         // disable cache (scss has imports)
         return self::$compiler->compile($sources, $this->file->getFilename());
     }
 
+    /**
+     * @return string
+     */
     public function getOutputExtension()
     {
         return 'css';

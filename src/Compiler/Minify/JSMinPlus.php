@@ -1592,7 +1592,7 @@ class JSParser
 
                                 $this->t->mustMatch(OP_COLON);
                                 $n->addNode(new JSNode($this->t, JS_PROPERTY_INIT, $id,
-                                        $this->Expression($x, OP_COMMA)));
+                                    $this->Expression($x, OP_COMMA)));
                             }
                         } while ($this->t->match(OP_COMMA));
 

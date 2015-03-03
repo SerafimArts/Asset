@@ -6,28 +6,37 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Serialize;
 
-use Serafim\Asset\Compiler\File;
-use Serafim\Asset\Serialize\AbstractSerialize;
-
+/**
+ * Class ImageSerialize
+ * @package Serafim\Asset\Serialize
+ */
 class ImageSerialize extends AbstractSerialize
 {
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toLink($args = [])
     {
         return $this->createTag('img', array_merge($args, [
-            'src'  => $this->getFile()->getPublicUrl(),
-            'alt'  => $this->getFile()->getPublicUrl()
+            'src' => $this->getFile()->getPublicUrl(),
+            'alt' => $this->getFile()->getPublicUrl()
         ]), '');
     }
 
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toInline($args = [])
     {
         return $this->createTag('img', array_merge($args, [
-            'src'  => 'data:image/' . $this->getFile()->getSplFileInfo()->getExtension() .
+            'src' => 'data:image/' . $this->getFile()->getSplFileInfo()->getExtension() .
                 ';base64,' . base64_encode(file_get_contents($this->getFile()->getPublicPath())),
-            'alt'  => $this->getFile()->getPublicUrl()
+            'alt' => $this->getFile()->getPublicUrl()
         ]), '');
     }
 }

@@ -6,14 +6,15 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Manifest;
 
+use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Events;
 use Serafim\Asset\Exception\ModifierException;
-use Symfony\Component\Finder\Finder;
 use SplFileInfo;
-use Serafim\Asset\Compiler\File;
+use Symfony\Component\Finder\Finder;
+
 
 /**
  * Class Parser
@@ -21,25 +22,36 @@ use Serafim\Asset\Compiler\File;
  */
 class Parser
 {
+    /**
+     * @var array
+     */
     protected $rules = [
         '\s*\/[\/|\*]\s*=\s*require\s*(?:\((.*?)\))?\s+(.*?)?\n'
     ];
 
+    /**
+     * @var string
+     */
     protected $sources;
 
+    /**
+     * @param File $file
+     * @param $sources
+     * @param $app
+     */
     public function __construct(File $file, $sources, $app)
     {
         $pattern = '#' . $this->rules[0] . '#iu';
 
         $output = $sources;
 
-        $this->parse($file, $pattern, $sources, function($finder, $srcLine, $dataLine) use (&$output, $file, $app) {
+        $this->parse($file, $pattern, $sources, function ($finder, $srcLine, $dataLine) use (&$output, $file, $app) {
             $included = "\n";
             foreach ($finder as $f) {
-                $include     = new File($f, $file->getConfigs());
-                $expression  = trim($dataLine);
+                $include = new File($f, $file->getConfigs());
+                $expression = trim($dataLine);
                 $app['events']->fire(Events::READ, $include);
-                $included   .=
+                $included .=
                     $include->getFileHeader($expression) .
                     $include->compile($app) . "\n";
             }
@@ -50,11 +62,19 @@ class Parser
 
     }
 
+
+    /**
+     * @param File $file
+     * @param $pattern
+     * @param $sources
+     * @param callable $after
+     * @throws ModifierException
+     */
     protected function parse(File $file, $pattern, $sources, callable $after)
     {
         preg_match_all($pattern, $sources, $matches);
 
-        for ($i=0; $i < count($matches[2]); $i++) {
+        for ($i = 0; $i < count($matches[2]); $i++) {
             /**
              * $matches[0] line
              * $matches[1] modifiers
@@ -70,6 +90,12 @@ class Parser
         }
     }
 
+    /**
+     * @param $path
+     * @param null $mods
+     * @return Finder
+     * @throws ModifierException
+     */
     protected function search($path, $mods = null)
     {
         $finder = new Finder();
@@ -107,34 +133,46 @@ class Parser
             ->files()
             ->in(substr($path, 0, mb_strlen($path) - 1))
             // all subdirectories first
-            ->sort(function(SplFileInfo $f1, SplFileInfo $f2){
+            ->sort(function (SplFileInfo $f1, SplFileInfo $f2) {
                 $f1c = substr_count(str_replace('\\', '/', $f1->getRelativePathname()), '/');
                 $f2c = substr_count(str_replace('\\', '/', $f2->getRelativePathname()), '/');
                 if ($f1c > $f2c) {
                     return -1;
-                } else if ($f1c < $f2c) {
-                    return 1;
+                } else {
+                    if ($f1c < $f2c) {
+                        return 1;
+                    }
                 }
+
                 return 0;
             })
             ->sortByName();
         foreach ($modifiers as $mod) {
             $mod($finder);
         }
+
         return $finder;
     }
 
+    /**
+     * @return string
+     */
     public function getSources()
     {
         return $this->sources;
     }
 
+    /**
+     * @param $method
+     * @param $arg
+     * @throws ModifierException
+     */
     public function parseModifier($method, $arg)
     {
         switch ($method) {
             case 'sort':
             case 'rsort':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     switch ($arg) {
                         case 'name':
                             $result->sortByName();
@@ -155,23 +193,23 @@ class Parser
                     }
                 };
             case 'name':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     $result->name($arg);
                 };
             case 'not':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     $result->notName($arg);
                 };
             case 'size':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     $result->size($arg);
                 };
             case 'depth':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     $result->depth($arg);
                 };
             case 'exclude':
-                return function (Finder $result) use($method, $arg) {
+                return function (Finder $result) use ($method, $arg) {
                     $result->exclude($arg);
                 };
             default:

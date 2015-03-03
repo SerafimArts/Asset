@@ -6,21 +6,30 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Driver;
 
-use SplFileInfo;
-use Serafim\Asset\Driver\AbstractDriver;
-
+/**
+ * Class JsDriver
+ * @package Serafim\Asset\Driver
+ */
 class JsDriver extends AbstractDriver
 {
+    /**
+     * @param $sources
+     * @param $app
+     * @return mixed
+     */
     public function compile($sources, $app)
     {
-        return $this->cache($app, function() use ($sources) {
+        return $this->cache($app, function () use ($sources) {
             return $sources;
         });
     }
 
+    /**
+     * @return string
+     */
     public function getOutputExtension()
     {
         return 'js';

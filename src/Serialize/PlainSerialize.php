@@ -6,22 +6,31 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Serialize;
 
-use Serafim\Asset\Compiler\File;
-use Serafim\Asset\Serialize\AbstractSerialize;
-
+/**
+ * Class PlainSerialize
+ * @package Serafim\Asset\Serialize
+ */
 class PlainSerialize extends AbstractSerialize
 {
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toLink($args = [])
     {
         return $this->createTag('a', array_merge($args, [
-            'href'  => $this->getFile()->getPublicUrl(),
+            'href'   => $this->getFile()->getPublicUrl(),
             'target' => '_blank',
         ]), $this->getFile()->getPublicUrl());
     }
 
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toInline($args = [])
     {
         return $this->createTag('pre', $args, $this->getSources());

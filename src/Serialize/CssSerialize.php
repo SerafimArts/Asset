@@ -6,23 +6,32 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Serialize;
 
-use Serafim\Asset\Compiler\File;
-use Serafim\Asset\Serialize\AbstractSerialize;
-
+/**
+ * Class CssSerialize
+ * @package Serafim\Asset\Serialize
+ */
 class CssSerialize extends AbstractSerialize
 {
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toLink($args = [])
     {
         return $this->createTag('link', array_merge($args, [
             'href' => $this->getFile()->getPublicUrl(),
-            'rel' => 'stylesheet',
+            'rel'  => 'stylesheet',
             'type' => 'text/css'
         ]));
     }
 
+    /**
+     * @param array $args
+     * @return mixed|string
+     */
     public function toInline($args = [])
     {
         return $this->createTag('style', $args, $this->getSources());

@@ -12,8 +12,8 @@ namespace Serafim\Asset;
 
 use Serafim\Asset\Compiler\File;
 use Serafim\Asset\Compiler\Publisher;
-use Serafim\Asset\Exception\FileNotFoundException;
 use Serafim\Asset\Exception\DoublePathException;
+use Serafim\Asset\Exception\FileNotFoundException;
 use SplFileInfo;
 
 /**
@@ -22,6 +22,8 @@ use SplFileInfo;
  */
 class Compiler
 {
+    const MANIFEST_NAME = '/manifest.appcache';
+
     /**
      * @var
      */
@@ -31,6 +33,12 @@ class Compiler
      * @var
      */
     protected $configs;
+
+    /**
+     * Output files
+     * @var array
+     */
+    protected static $output = [];
 
     /**
      * @param $app
@@ -58,7 +66,7 @@ class Compiler
 
         if (!$this->configs['cache'] || !$file->exists()) {
             $publisher = new Publisher($file, $this->configs, $this->app);
-            $publisher->publish();
+            $publisher->publish()->withManifest(self::$output);
 
             $this->app['events']->fire(Events::PUBLISH, $file);
         }
@@ -66,24 +74,55 @@ class Compiler
         return $file->getOutputInterface();
     }
 
+    /**
+     * @param $file
+     */
+    public static function attach($file)
+    {
+        self::$output[] = $file;
+    }
 
+    /**
+     * @return string
+     */
+    public function manifest()
+    {
+        $file = static::MANIFEST_NAME;
+        if (!file_exists($this->configs['public'] . $file)) {
+            return '';
+        }
+
+        $file .= '?v=' . filemtime($this->configs['public'] . $file);
+        return $this->configs['url'] . $file;
+    }
+
+    /**
+     * @param $fpath
+     * @param $configs
+     * @return SplFileInfo
+     * @throws DoublePathException
+     * @throws FileNotFoundException
+     */
     protected function search($fpath, $configs)
     {
         $realpath = null;
-        foreach($configs['paths'] as $path) {
+        $messageExists   = 'File found in %s but file already exists in %s';
+        $messageNotFound = 'File %s not found.';
+
+        foreach ($configs['paths'] as $path) {
             $temp = $path . '/' . $fpath;
+
             if (file_exists($temp)) {
+
                 if ($realpath) {
-                    throw new DoublePathException(
-                        "File found in ${temp} but file already exists in ${realpath}"
-                    );
+                    throw new DoublePathException(sprintf($messageExists, [$temp, $realpath]));
                 }
                 $realpath = $temp;
             }
         }
 
         if (!$realpath) {
-            throw new FileNotFoundException("File ${fpath} not found.");
+            throw new FileNotFoundException(sprintf($messageNotFound, [$fpath]));
         }
 
         return new SplFileInfo($realpath);

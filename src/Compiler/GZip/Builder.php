@@ -3,8 +3,19 @@ namespace Serafim\Asset\Compiler\GZip;
 
 use Exception;
 
+/**
+ * Class Builder
+ * @package Serafim\Asset\Compiler\GZip
+ */
 class Builder
 {
+    /**
+     * @param $src
+     * @param bool $dst
+     * @param int $level
+     * @return bool
+     * @throws Exception
+     */
     public static function make($src, $dst = false, $level = 5)
     {
         if ($dst == false) {
@@ -25,6 +36,7 @@ class Builder
             }
             fclose($srcHandle);
             gzclose($dstHandle);
+
             return true;
         }
 

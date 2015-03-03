@@ -1,8 +1,10 @@
 <?php
 namespace Serafim\Asset\Compiler\SourceMaps;
 
-use Exception;
-
+/**
+ * Class Builder
+ * @package Serafim\Asset\Compiler\SourceMaps
+ */
 class Builder
 {
     /**
@@ -16,8 +18,8 @@ class Builder
             return;
         }
 
-        $path   = $file->getPublicPath() . '.map';
-        $url    = $file->getPublicUrl()  . '.map';
+        $path = $file->getPublicPath() . '.map';
+        $url = $file->getPublicUrl() . '.map';
 
         $sources .= "\n//# sourceMappingURL=${url}\n";
 

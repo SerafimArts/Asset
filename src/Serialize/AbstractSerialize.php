@@ -6,24 +6,45 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Serialize;
 
 use Serafim\Asset\Compiler\File;
 
+/**
+ * Class AbstractSerialize
+ * @package Serafim\Asset\Serialize
+ */
 abstract class AbstractSerialize
 {
+    /**
+     * @var File
+     */
     protected $file;
 
+    /**
+     * @param File $file
+     */
     public function __construct(File $file)
     {
         $this->file = $file;
     }
 
+    /**
+     * @param array $args
+     * @return mixed
+     */
     abstract public function toLink($args = []);
 
+    /**
+     * @param array $args
+     * @return mixed
+     */
     abstract public function toInline($args = []);
 
+    /**
+     * @return File
+     */
     public function getFile()
     {
         return $this->file;
@@ -44,6 +65,7 @@ abstract class AbstractSerialize
     {
         return (string)$this->toLink();
     }
+
     /**
      * @param $name
      * @param array $options
@@ -55,9 +77,11 @@ abstract class AbstractSerialize
         if ($content === null) {
             return '<' . $name . $this->parseArgs($options) . ' />';
         }
+
         return '<' . $name . $this->parseArgs($options) . '>' .
         $content . '</' . $name . '>';
     }
+
     /**
      * @param $args
      * @return string
@@ -68,10 +92,11 @@ abstract class AbstractSerialize
         foreach ($args as $attr => $val) {
             $result[] = $attr . '="' . $val . '"';
         }
+
         return (
-            count($result)
-                ? ' ' . implode(' ', $result)
-                : ''
+        count($result)
+            ? ' ' . implode(' ', $result)
+            : ''
         );
     }
 }

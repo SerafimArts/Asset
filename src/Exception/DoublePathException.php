@@ -6,7 +6,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
 namespace Serafim\Asset\Exception;
 
 use Exception;
@@ -15,4 +15,6 @@ use Exception;
  * Class DoublePathException
  * @package Serafim\Asset\Exception
  */
-class DoublePathException extends Exception {}
+class DoublePathException extends Exception
+{
+}

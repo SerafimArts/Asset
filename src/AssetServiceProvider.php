@@ -19,7 +19,8 @@ use Serafim\Asset\Compiler;
  */
 class AssetServiceProvider extends ServiceProvider
 {
-    const HELPERS_PATH  = '/helpers.php';
+    // Helpers path
+    const HELPERS_PATH = '/helpers.php';
 
     /**
      * @var bool
@@ -35,7 +36,7 @@ class AssetServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register application
+     * Register an application
      */
     public function register()
     {
@@ -49,6 +50,7 @@ class AssetServiceProvider extends ServiceProvider
             return $compiler;
         });
     }
+
     /**
      * @return array
      */

@@ -2,7 +2,6 @@
 namespace Serafim\Asset\Compiler\SourceMaps;
 
 use Exception;
-use Serafim\Asset\Compiler\SourceMaps\Base64VLQ;
 
 /**
  * Class SourceMap
@@ -94,10 +93,10 @@ class SourceMap
     /**
      * Adds a mapping
      *
-     * @param array $generated  The [line, column] in generated file
-     * @param array $original   The [line, column] in original file
+     * @param array $generated The [line, column] in generated file
+     * @param array $original The [line, column] in original file
      * @param $source           The original source file
-     * @param null $name        Token name
+     * @param null $name Token name
      * @throws Exception
      */
     public function add(array $generated, array $original, $source, $name = null)
@@ -111,12 +110,12 @@ class SourceMap
         }
 
         $this->mapping[] = [
-            'generatedLine'     => $generated[0],
-            'generatedColumn'   => $generated[1],
-            'originalLine'      => $original[0],
-            'originalColumn'    => $original[1],
-            'originalSource'    => $source,
-            'originalName'      => $name,
+            'generatedLine'   => $generated[0],
+            'generatedColumn' => $generated[1],
+            'originalLine'    => $original[0],
+            'originalColumn'  => $original[1],
+            'originalSource'  => $source,
+            'originalName'    => $name,
         ];
     }
 
@@ -136,7 +135,9 @@ class SourceMap
             // up to date, nothing to do
             return;
         }
-        if (!count($this->mapping)) { return ''; }
+        if (!count($this->mapping)) {
+            return '';
+        }
 
         $this->map->sources = [];
         foreach ($this->mapping as $m) {
@@ -200,6 +201,7 @@ class SourceMap
         }
 
         $this->map->mappings = rtrim(implode($groupedMapEncoded), ';');
+
         return $this->map;
     }
 
@@ -230,13 +232,13 @@ class SourceMap
             $offset += strlen($replace) - strlen($string);
             $line = substr_count(substr($str, 0, $pos), "\n") + 1;
             $column = $pos - strrpos(
-                substr($str, 0, $pos),
-                "\n"
-            ); //strrpos can return false for first line which will subtract 0 (=false)
+                    substr($str, 0, $pos),
+                    "\n"
+                ); //strrpos can return false for first line which will subtract 0 (=false)
             $adjustOffsets[$line][] = [
-                'column' => $column,
+                'column'         => $column,
                 'absoluteOffset' => $offset,
-                'offset' => strlen($replace) - strlen($string)
+                'offset'         => strlen($replace) - strlen($string)
             ];
             $pos = $pos + strlen($string);
         }
@@ -364,6 +366,7 @@ class SourceMap
                 }
             }
         }
+
         return $this->mapping;
     }
 
@@ -386,10 +389,10 @@ class SourceMap
         $data = $other->getMapContentsData();
 
         $previousFileLast = (object)[
-            'source' => 0,
-            'originalLine' => 0,
+            'source'         => 0,
+            'originalLine'   => 0,
             'originalColumn' => 0,
-            'name' => 0,
+            'name'           => 0,
         ];
 
         if (!$data->mappings) {
@@ -510,7 +513,6 @@ class SourceMap
     }
 
 
-
     /**
      * Returns the contents of the source map as object (that can be json_encoded)
      *
@@ -519,6 +521,7 @@ class SourceMap
     public function toArray($includeLastExtension = true)
     {
         $this->generate();
+
         return (array)$this->map;
     }
 

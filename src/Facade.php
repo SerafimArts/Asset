@@ -9,8 +9,10 @@
  */
 namespace Serafim\Asset;
 
-use Illuminate\Support\Facades\Facade as IlluminateFacade;
-
+/**
+ * Class Facade
+ * @package Serafim\Asset
+ */
 class Facade extends IlluminateFacade
 {
     /**
@@ -18,5 +20,8 @@ class Facade extends IlluminateFacade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'asset'; }
+    protected static function getFacadeAccessor()
+    {
+        return 'asset';
+    }
 }

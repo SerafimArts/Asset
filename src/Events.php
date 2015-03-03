@@ -10,10 +10,22 @@
 
 namespace Serafim\Asset;
 
+
+/**
+ * Class Events
+ * @package Serafim\Asset
+ */
 class Events
 {
+    // Boot event
     const BOOT      = 'asset.boot';
+
+    // File read event
     const READ      = 'asset.read';
+
+    // File compile event
     const COMPILE   = 'asset.compile';
+
+    // Publish file event
     const PUBLISH   = 'asset.publish';
 }
