@@ -9,6 +9,8 @@
  */
 namespace Serafim\Asset;
 
+use Illuminate\Support\Facades\Facade as IlluminateFacade;
+
 /**
  * Class Facade
  * @package Serafim\Asset
