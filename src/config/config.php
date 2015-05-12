@@ -9,32 +9,27 @@
  */
 
 return [
-    'cache'   => (bool)App::environment('production'),
+    'cache'   => env('ASSETS_CACHE', false),
 
-    'gzip'    => (bool)App::environment('production') ? 5 : -1, // gzip level (-1 == do not build zip files)
+    'gzip'    => env('ASSETS_CACHE', -1), // gzip level (-1 == do not build zip files)
 
     'publish' => 'basic',
 
     'paths'   => [
-        app_path('assets'),
-        app_path('assets/javascripts'),
-        app_path('assets/stylesheets'),
-        app_path('assets/images'),
-        base_path('lib/assets'),
-        base_path('lib/assets/javascripts'),
-        base_path('lib/assets/stylesheets'),
-        base_path('lib/assets/images'),
+        base_path('resources/assets'),
+        base_path('resources/assets/javascripts'),
+        base_path('resources/assets/stylesheets'),
+        base_path('resources/assets/images'),
     ],
 
     'public'  => public_path('assets'),
 
-    'url'     => URL::to('/assets'),
+    'url'     => url('/assets'),
 
     'drivers' => [
         'Serafim\\Asset\\Driver\\CoffeePhpDriver'       => ['coffee'],
         'Serafim\\Asset\\Driver\\JsDriver'              => ['js'],
         'Serafim\\Asset\\Driver\\ScssPhpDriver'         => ['scss'],
-        //'Serafim\\Asset\\Driver\\ScssCompassPhpDriver'  => ['compass.scss'],
         'Serafim\\Asset\\Driver\\SassPhpDriver'         => ['sass'],
         'Serafim\\Asset\\Driver\\LessPhpDriver'         => ['less'],
         'Serafim\\Asset\\Driver\\CssDriver'             => ['css'],
@@ -50,7 +45,7 @@ return [
     ],
 
     'minify'  => [
-        'enable' => (bool)App::environment('production'),
+        'enable' => env('ASSETS_MINIFY', false),
         'js'     => 'Serafim\\Asset\\Minify\\JsNativeMinify',
         'css'    => 'Serafim\\Asset\\Minify\\CssNativeMinify',
     ],

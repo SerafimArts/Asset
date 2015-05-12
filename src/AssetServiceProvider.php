@@ -20,8 +20,20 @@ use Serafim\Asset\Compiler\CacheManifest;
  */
 class AssetServiceProvider extends ServiceProvider
 {
-    // Helpers path
-    const HELPERS_PATH = '/helpers.php';
+    /**
+     * Helpers path
+     */
+    const PATH_HELPERS = '/helpers.php';
+
+    /**
+     * Configs path
+     */
+    const PATH_CONFIGS = '/config/config.php';
+
+    /**
+     * Destination config file name
+     */
+    const PATH_CONFIGS_DEST = 'assets';
 
     /**
      * @var bool
@@ -33,7 +45,9 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('serafim/asset', 'asset', __DIR__);
+        $this->publishes([
+            $this->getDefaultConfigs() => config_path(self::PATH_CONFIGS_DEST . '.php')
+        ], 'config');
     }
 
     /**
@@ -41,17 +55,26 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        require_once __DIR__ . self::HELPERS_PATH;
+        require_once __DIR__ . self::PATH_HELPERS;
 
+        $this->mergeConfigFrom($this->getDefaultConfigs(), self::PATH_CONFIGS_DEST);
 
         $this->app['asset'] = $this->app->share(function ($app)  {
-            $configs  = $this->app->config->get('asset::config');
+            $configs  = $this->app->config->get(self::PATH_CONFIGS_DEST);
             $compiler = new Compiler($this->app, $configs);
 
             $app['events']->fire(Events::BOOT, $compiler);
 
             return $compiler;
         });
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultConfigs()
+    {
+        return __DIR__ . self::PATH_CONFIGS;
     }
 
     /**
