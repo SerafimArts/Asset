@@ -122,14 +122,14 @@ class Compiler
             if (file_exists($temp)) {
 
                 if ($realpath) {
-                    throw new DoublePathException(sprintf($messageExists, [$temp, $realpath]));
+                    throw new DoublePathException(sprintf($messageExists, $temp, $realpath));
                 }
                 $realpath = $temp;
             }
         }
 
         if (!$realpath) {
-            throw new FileNotFoundException(sprintf($messageNotFound, [$fpath]));
+            throw new FileNotFoundException(sprintf($messageNotFound, $fpath));
         }
 
         return new SplFileInfo($realpath);
