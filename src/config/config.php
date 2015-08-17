@@ -24,7 +24,7 @@ return [
 
     'public'  => public_path('assets'),
 
-    'url'     => url('/assets'),
+    'url'     => '/assets',
 
     'drivers' => [
         'Serafim\\Asset\\Driver\\CoffeePhpDriver'       => ['coffee'],
