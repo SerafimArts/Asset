@@ -41,6 +41,11 @@ class FileCollection
     protected $drivers;
 
     /**
+     * @var string
+     */
+    protected $query;
+
+    /**
      * @param $query
      * @param array $paths
      * @throws InvalidArgumentException
@@ -48,6 +53,7 @@ class FileCollection
     public function __construct($query, array $paths)
     {
         $query          = str_replace('\\', '/', $query);
+        $this->query    = $query;
         $this->paths    = $paths;
         $this->finder   = (new Finder)
             ->files()
@@ -86,6 +92,7 @@ class FileCollection
         if ($this->files === []) {
             foreach ($this->finder as $file) {
                 $this->files[] = (new File($file->getPathname(), $this->paths))
+                    ->setHeader('Inject ' . $this->query)
                     ->attachDriverStorage($this->drivers);
             }
         }

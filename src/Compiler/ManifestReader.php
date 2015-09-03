@@ -146,11 +146,7 @@ class ManifestReader
         }
 
 
-        return $collection
-            ->each(function(File $file) use ($whitespaces) {
-                $file->setWhitespaceLevel(substr_count($whitespaces, ' '));
-            })
-            ->getFiles();
+        return $collection->getFiles();
     }
 
 }

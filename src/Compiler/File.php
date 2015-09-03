@@ -46,11 +46,9 @@ class File
     protected $manifest;
 
     /**
-     * Dependency insert whitespace level
-     *
-     * @var int
+     * @var string
      */
-    protected $whitespaceLevel = 0;
+    protected $header = '';
 
     /**
      * @param $fileName
@@ -75,19 +73,21 @@ class File
     }
 
     /**
-     * @param int $level
+     * @param $header
+     * @return $this
      */
-    public function setWhitespaceLevel($level)
+    public function setHeader($header)
     {
-        $this->whitespaceLevel = $level;
+        $this->header = $header;
+        return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getWhitespaceLevel()
+    public function getHeader()
     {
-        return $this->whitespaceLevel;
+        return $this->header;
     }
 
     /**
@@ -111,9 +111,7 @@ class File
      */
     public function getSourceCode()
     {
-        $whitespaces = str_repeat(' ', $this->whitespaceLevel);
-        return $whitespaces .
-            str_replace("\n", "\n" . $whitespaces, $this->sources);
+        return $this->sources;
     }
 
     /**

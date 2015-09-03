@@ -9,23 +9,25 @@
  * file that was distributed with this source code.
  */
 use Serafim\Asset\Compiler;
-use Serafim\Asset\Drivers\JavaScriptDriver;
-use Serafim\Asset\Drivers\CoffeeScriptDriver;
-use Serafim\Asset\Drivers\TypeScriptDriver;
 use Serafim\Asset\Drivers\CssDriver;
+use Serafim\Asset\Drivers\ScssDriver;
+use Serafim\Asset\Drivers\JavaScriptDriver;
+use Serafim\Asset\Drivers\TypeScriptDriver;
+use Serafim\Asset\Drivers\CoffeeScriptDriver;
 
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 try {
 
     $compiler = (new Compiler)
-        ->attachDriver(new JavaScriptDriver, ['js'])
-        ->attachDriver(new CoffeeScriptDriver, ['coffee'])
-        ->attachDriver(new TypeScriptDriver, ['ts'])
-        ->attachDriver(new CssDriver, ['css'])
+        ->attachDriver(new JavaScriptDriver,    ['js'])
+        ->attachDriver(new CoffeeScriptDriver,  ['coffee'])
+        ->attachDriver(new TypeScriptDriver,    ['ts'])
+        ->attachDriver(new CssDriver,           ['css'])
+        ->attachDriver(new ScssDriver(),        ['scss'])
         ->addInputPaths(__DIR__ . '/stubs')
-        ->build('a.ts');
+        ->build('test.scss');
 
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
