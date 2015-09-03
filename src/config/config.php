@@ -11,7 +11,7 @@
 return [
     'cache'   => env('ASSETS_CACHE', false),
 
-    'gzip'    => env('ASSETS_CACHE', -1), // gzip level (-1 == do not build zip files)
+    'gzip'    => env('ASSETS_GZIP', -1), // gzip level (-1 == do not build zip files)
 
     'publish' => 'basic',
 
@@ -33,6 +33,7 @@ return [
         'Serafim\\Asset\\Driver\\SassPhpDriver'         => ['sass'],
         'Serafim\\Asset\\Driver\\LessPhpDriver'         => ['less'],
         'Serafim\\Asset\\Driver\\CssDriver'             => ['css'],
+        'Serafim\\Asset\\Driver\\TypeScriptNodeDriver'  => ['ts'],
         'Serafim\\Asset\\Driver\\ImageDriver'           => ['jpg', 'png', 'gif'],
     ],
 

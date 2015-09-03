@@ -179,7 +179,19 @@ class File
             return '';
         }
 
-        $source = file_get_contents($this->file->getRealPath());
+        $source = '';
+
+        if (!is_file($this->file->getRealPath())) {
+            throw new \LogicException(sprintf(
+                'Invalid file "%s", file not found.',
+                $this->file->getPathname()
+            ));
+        }
+
+        // Add \n
+        $source = file_get_contents($this->file->getRealPath()) . "\n";
+
+
         $result = $this->driver->compile($source, $app);
 
         if ($this->driver->hasManifest()) {
@@ -228,7 +240,7 @@ class File
      */
     public function exists()
     {
-        return file_exists($this->getPublicPath());
+        return is_file($this->getPublicPath());
     }
 
     /**
@@ -244,6 +256,7 @@ class File
      */
     public function getPublicUrl()
     {
-        return $this->configs['url'] . '/' . $this->public;
+        return $this->configs['url'] . '/' . $this->public .
+                '?v=' . $this->file->getMTime();
     }
 }
