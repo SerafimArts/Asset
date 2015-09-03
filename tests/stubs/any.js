@@ -1,0 +1,1 @@
+var sourcesOfAnyJs = 42;

@@ -1,21 +1,16 @@
 {
     "name": "serafim/asset",
     "type": "library",
-    "description": "Asset Pipleine for Laravel 5.",
+    "description": "Php Asset Compiler",
     "keywords": ["css", "scss", "less", "javascript", "coffeescript", "asset", "minify"],
     "homepage": "https://github.com/SerafimArts/Asset",
     "license": "MIT",
-    "version": "2.1.3",
     "require": {
-        "php": ">=5.4.0",
-        "coffeescript/coffeescript": "1.3.1",
-        "leafo/scssphp": "0.1.9",
-        "leafo/lessphp": "0.5.0",
-        "richthegeek/phpsass": "2014-03-20",
-        "symfony/process": "2.*"
+        "php": ">=5.5.0",
+        "symfony/process": "2.*",
+        "symfony/finder": "2.*"
     },
     "suggest": {
-        "serafim/scssphp-compass": "Compass support"
     },
     "authors": [
         {
@@ -28,11 +23,5 @@
         "psr-4": {
             "Serafim\\Asset\\": "src"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.1-dev"
-        }
-    },
-    "minimum-stability": "dev"
+    }
 }

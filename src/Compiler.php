@@ -1,21 +1,21 @@
 <?php
 /**
- * This file is part of Asset package.
+ * This file is part of Asset3 package.
  *
- * Serafim <nesk@xakep.ru> (14.10.2014 19:55)
+ * @author Serafim <nesk@xakep.ru>
+ * @date   03.09.2015 15:38
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Serafim\Asset;
 
-use Serafim\Asset\Compiler\CacheManifest;
+use Serafim\Asset\Compiler\DriverStorage;
 use Serafim\Asset\Compiler\File;
-use Serafim\Asset\Compiler\Publisher;
-use Serafim\Asset\Exception\DoublePathException;
-use Serafim\Asset\Exception\FileNotFoundException;
-use SplFileInfo;
+use Serafim\Asset\Compiler\FileCollection;
+use Serafim\Asset\Drivers\DriverInterface;
+use SplFileObject;
+use LogicException;
 
 /**
  * Class Compiler
@@ -24,114 +24,83 @@ use SplFileInfo;
 class Compiler
 {
     /**
-     * @var
-     */
-    protected $app;
-
-    /**
-     * @var
-     */
-    protected $configs;
-
-    /**
-     * Output files
      * @var array
      */
-    protected static $output = [];
+    protected $paths = [];
 
     /**
-     * @param $app
-     * @param $configs
+     * @var DriverStorage
      */
-    public function __construct($app, $configs)
+    protected $drivers;
+
+    /**
+     * @return Compiler
+     */
+    public function __construct()
     {
-        $this->app = $app;
-        $this->configs = $configs;
+        $this->drivers = new DriverStorage();
     }
 
     /**
-     * @param $path
-     * @param array $options
-     * @return array
-     * @throws FileNotFoundException
+     * @param DriverInterface $driver
+     * @param array $extensions
+     * @return $this
      */
-    public function make($path, array $options = [])
+    public function attachDriver(DriverInterface $driver, array $extensions)
     {
-        File::clearCompiledFiles();
-
-        $file = new File(
-            $this->search($path, $this->configs),
-            $this->configs
-        );
-
-        if (!$this->configs['cache'] || !$file->exists()) {
-            $publisher = new Publisher($file, $this->configs, $this->app);
-            $publisher->publish();
-
-            $this->app['events']->fire(Events::PUBLISH, $file);
-        }
-
-        return $file->getOutputInterface();
+        $this->drivers->attach($driver, $extensions);
+        return $this;
     }
 
     /**
-     * @param $file
+     * @param $paths
+     * @return $this
+     * @throws LogicException
      */
-    public static function addCompiledFile($file)
+    public function addInputPaths($paths)
     {
-        self::$output[] = $file;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getCompiledFiles()
-    {
-        return self::$output;
-    }
-
-    /**
-     * @return string
-     */
-    public function manifest()
-    {
-        $this->app->after(function() {
-            $manifest = new CacheManifest(Compiler::getCompiledFiles(), $this->configs);
-            $manifest->build();
-        });
-
-        return CacheManifest::getOutputUrl($this->configs);
-    }
-
-    /**
-     * @param $fpath
-     * @param $configs
-     * @return SplFileInfo
-     * @throws DoublePathException
-     * @throws FileNotFoundException
-     */
-    protected function search($fpath, $configs)
-    {
-        $realpath = null;
-        $messageExists   = 'File found in %s but file already exists in %s';
-        $messageNotFound = 'File %s not found.';
-
-        foreach ($configs['paths'] as $path) {
-            $temp = $path . '/' . $fpath;
-
-            if (file_exists($temp)) {
-
-                if ($realpath) {
-                    throw new DoublePathException(sprintf($messageExists, $temp, $realpath));
-                }
-                $realpath = $temp;
+        foreach ((array)$paths as $path) {
+            if (!is_dir($path)) {
+                $error = sprintf('%s is not a valid directory', $path);
+                throw new LogicException($error);
             }
+
+            $this->paths[] = $path;
         }
 
-        if (!$realpath) {
-            throw new FileNotFoundException(sprintf($messageNotFound, $fpath));
-        }
-
-        return new SplFileInfo($realpath);
+        return $this;
     }
+
+    /**
+     * @param $fileName
+     * @return $this
+     * @throws LogicException
+     */
+    public function build($fileName)
+    {
+        $collection = (new FileCollection($fileName, $this->paths))
+            ->attachDriverStorage($this->drivers);
+
+        if (!count($collection->getFiles())) {
+            $message = sprintf(
+                'File "%s" was not found in [%s]',
+                $fileName,
+                implode(', ', array_map(function($item){ return '"' . realpath($item) . '"'; }, $this->paths))
+            );
+            throw new LogicException($message);
+        }
+
+        foreach ($collection->getFiles() as $file) {
+            $result = $file->build();
+
+            echo str_repeat('=', 100) . "\n";
+            echo $result;
+            echo str_repeat('=', 100) . "\n";
+        }
+
+
+        return $this;
+    }
+
+
 }

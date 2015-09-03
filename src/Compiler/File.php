@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of Assets package.
+ * This file is part of Asset3 package.
  *
- * Serafim <nesk@xakep.ru> (05.11.2014 12:39)
+ * @author Serafim <nesk@xakep.ru>
+ * @date   03.09.2015 15:48
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 namespace Serafim\Asset\Compiler;
 
-use Serafim\Asset\Driver\PlainDriver;
-use Serafim\Asset\Manifest\Parser;
-use Serafim\Asset\Serialize\PlainSerialize;
-use SplFileInfo;
+use SplFileObject;
+use LogicException;
+use Serafim\Asset\Drivers\DriverInterface;
 
 /**
  * Class File
@@ -21,242 +21,181 @@ use SplFileInfo;
 class File
 {
     /**
-     * @var array
-     */
-    protected static $includedFiles = [];
-
-    /**
-     * @var SplFileInfo
+     * @var SplFileObject
      */
     protected $file;
 
     /**
-     * @var
+     * @var array
      */
-    protected $configs;
+    protected $paths = [];
+
+    /**
+     * @var DriverStorage
+     */
+    protected $drivers;
 
     /**
      * @var string
      */
-    protected $public;
+    protected $sources;
 
     /**
-     * @var PlainDriver
+     * @var ManifestReader
      */
-    protected $driver;
+    protected $manifest;
 
     /**
-     * @var bool
+     * Dependency insert whitespace level
+     *
+     * @var int
      */
-    protected $included = false;
+    protected $whitespaceLevel = 0;
 
     /**
-     * @param SplFileInfo $file
-     * @param $configs
+     * @param $fileName
+     * @param array $paths
+     * @param null $sources
      */
-    public function __construct(SplFileInfo $file, $configs)
+    public function __construct($fileName, array $paths = [], $sources = null)
     {
-        if (!in_array($file->getRealPath(), self::$includedFiles)) {
-            self::$includedFiles[] = $file->getRealPath();
-        } else {
-            $this->included = true;
+        $this->file  = new SplFileObject($fileName);
+        $this->paths = $paths;
+
+        $this->sources = $sources;
+        if ($sources === null) {
+            $this->sources = file_get_contents($this->file->getPathname());
         }
 
-        $this->file = $file;
-        $this->configs = $configs;
-        $this->driver = $this->makeDriver($file, $configs);
-        $this->public = $this->makePublicName($file, $configs, $this->driver);
+        // Dependency reader
+        $this->manifest = new ManifestReader($this);
+
+        // Attach empty storage
+        $this->drivers  = new DriverStorage();
     }
 
     /**
-     * @param $code
-     * @return mixed
+     * @param int $level
      */
-    public function minify($code)
+    public function setWhitespaceLevel($level)
     {
-        $ext = $this->driver->getOutputExtension();
-
-        if ($this->configs['minify']['enable'] &&
-            in_array($ext, array_keys($this->configs['minify']))
-        ) {
-
-            $class = $this->configs['minify'][$ext];
-            $instance = new $class;
-
-            return $instance->minify($code);
-        }
-
-        return $code;
+        $this->whitespaceLevel = $level;
     }
 
     /**
-     * @param SplFileInfo $file
-     * @param $configs
-     * @param $driver
-     * @return string
+     * @return int
      */
-    protected function makePublicName(SplFileInfo $file, $configs, $driver)
+    public function getWhitespaceLevel()
     {
-        $md5 = md5($file->getRealPath());
-        $name = str_replace($file->getExtension(), '', $file->getFilename());
-
-        return ($configs['publish'] == 'advanced')
-            ? substr($md5, 0, 2) . '/' .
-            substr($md5, 2, 2) . '/' .
-            substr($md5, 4, 16) . '-' .
-            $name . $driver->getOutputExtension()
-            :
-            $md5 . '-' .
-            $name . $driver->getOutputExtension();
-    }
-
-    /**
-     * @param SplFileInfo $file
-     * @param $configs
-     * @return PlainDriver
-     */
-    protected function makeDriver(SplFileInfo $file, $configs)
-    {
-        $extension = $file->getExtension();
-        foreach ($configs['drivers'] as $class => $ext) {
-            if (in_array($extension, $ext)) {
-                return new $class($this);
-            }
-        }
-
-        return new PlainDriver($this);
-    }
-
-    /**
-     * @return PlainSerialize
-     */
-    public function getOutputInterface()
-    {
-        $ext = $this->driver->getOutputExtension();
-        if (isset($this->configs['output'][$ext])) {
-            $class = $this->configs['output'][$ext];
-
-            return new $class($this);
-        }
-
-        return new PlainSerialize($this);
+        return $this->whitespaceLevel;
     }
 
     /**
      * @return array
      */
-    public function getIncludedFiles()
+    public function getInputPaths()
     {
-        return self::$includedFiles;
+        return $this->paths;
     }
 
     /**
-     * @return array
+     * @return SplFileObject
      */
-    public function getIncludedFileNames()
-    {
-        $result = [];
-        $files = self::$includedFiles;
-        foreach ($files as $file) {
-            $result[] = basename($file);
-        }
-
-        return $result;
-    }
-
-    public static function clearCompiledFiles()
-    {
-        self::$includedFiles = [];
-    }
-
-    /**
-     * @param $app
-     * @return mixed|string
-     */
-    public function compile($app)
-    {
-        if ($this->included) {
-            return '';
-        }
-
-        $source = '';
-
-        if (!is_file($this->file->getRealPath())) {
-            throw new \LogicException(sprintf(
-                'Invalid file "%s", file not found.',
-                $this->file->getPathname()
-            ));
-        }
-
-        // Add \n
-        $source = file_get_contents($this->file->getRealPath()) . "\n";
-
-
-        $result = $this->driver->compile($source, $app);
-
-        if ($this->driver->hasManifest()) {
-            $parser = new Parser($this, $result, $app);
-            $result = $parser->getSources();
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return PlainDriver
-     */
-    public function getDriver()
-    {
-        return $this->driver;
-    }
-
-    /**
-     * @param null $expr
-     * @return string
-     */
-    public function getFileHeader($expr = null)
-    {
-        return $this->driver->getFileHeader($expr);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfigs()
-    {
-        return $this->configs;
-    }
-
-    /**
-     * @return SplFileInfo
-     */
-    public function getSplFileInfo()
+    public function getSplFileObject()
     {
         return $this->file;
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function exists()
+    public function getSourceCode()
     {
-        return is_file($this->getPublicPath());
+        $whitespaces = str_repeat(' ', $this->whitespaceLevel);
+        return $whitespaces .
+            str_replace("\n", "\n" . $whitespaces, $this->sources);
     }
 
     /**
      * @return string
      */
-    public function getPublicPath()
+    public function build()
     {
-        return $this->configs['public'] . '/' . $this->public;
+        $sources = $this->getSourceCode();
+
+        $sources = $this->applyDependencies(
+            $sources,
+            $this->manifest->getSourceDependencies(),
+            function(File $file) {
+                return $file->getSourceCode();
+            }
+        );
+
+        foreach ($this->getPipeline() as $driver) {
+            if ($driver) {
+                $sources = $driver->build($this->file, $sources);
+            }
+        }
+
+        $sources = $this->applyDependencies(
+            $sources,
+            $this->manifest->getCompiledDependencies(),
+            function(File $file) { return $file->build(); }
+        );
+
+        return $sources;
     }
 
     /**
-     * @return string
+     * Inject dependencies inside code
+     *
+     * @param $sources
+     * @param \Traversable $dependencies
+     * @param callable $insert
+     * @return mixed
      */
-    public function getPublicUrl()
+    protected function applyDependencies($sources, \Traversable $dependencies, callable $insert)
     {
-        return $this->configs['url'] . '/' . $this->public .
-                '?v=' . $this->file->getMTime();
+        foreach ($dependencies as $query => $subDependencies) {
+            $joinedCode = '';
+            foreach ($subDependencies as $file) {
+                $joinedCode .= $insert($file);
+            }
+            $sources = str_replace($query, $joinedCode, $sources);
+        }
+
+        return $sources;
+    }
+
+    /**
+     * @param DriverStorage $storage
+     * @return $this
+     */
+    public function attachDriverStorage(DriverStorage $storage)
+    {
+        $this->drivers = $storage;
+        return $this;
+    }
+
+    /**
+     * @return DriverStorage
+     */
+    public function getDriverStorage()
+    {
+        return $this->drivers;
+    }
+
+
+    /**
+     * @return DriverInterface[]|\Generator
+     */
+    protected function getPipeline()
+    {
+        $extensions = explode('.', $this->file->getFilename());
+        array_shift($extensions);
+
+        foreach ($extensions as $extension) {
+            yield $this->drivers->detectDriver($extension);
+        }
     }
 }
