@@ -12,7 +12,7 @@ Asset
 }
 ```
 
-##### Laravel 4.2
+##### Laravel 4.2 (Legacy)
 ```json
 "require": {
   "serafim/asset": "1.*"
